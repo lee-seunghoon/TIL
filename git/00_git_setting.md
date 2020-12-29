@@ -7,8 +7,8 @@
 
 
 ```bash
-$ git config --global user.name __username__
-$ git config --global user.email __email__
+$ git config --global user.name 'username'
+$ git config --global user.email 'email'
 ```
 
 
@@ -17,5 +17,8 @@ $ git config --global user.email __email__
 
 ```bash
 $ git config --global -l
+user.name=sh0316
+user.email=sh0316@kakao.com
 ```
 
+- 설정된 이메일이 Github에 등록된 이메일이랑 같도록 하는 것을 추천(잔디밭)

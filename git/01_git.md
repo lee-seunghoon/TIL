@@ -10,14 +10,14 @@
 $ git init
 # 초기화가 되었다. in 뒤 경로에서.
 Initialized empty Git repository in C:/Users/USER/Desktop/practice/.git/
-(master) $
+(master)
 ```
 
-- .git 폴더가 생성되고, 여기에 모든 git과 관련된 정보들이 저장된다.
+- `.git` 폴더가 생성되고, 여기에 모든 git과 관련된 정보들이 저장된다.
 
 
 
-## 기본작업 흐름
+## 1.기본작업 흐름
 
 > 모든 작업은 touch로 파일을 만드는 것으로 대체
 
@@ -26,7 +26,7 @@ Initialized empty Git repository in C:/Users/USER/Desktop/practice/.git/
 ### 1. add
 
 ```bash
-$ git add . 	# . : 현재 디렉토리(파위 디렉토리 포함)
+$ git add . 	# . : 현재 디렉토리(하위 디렉토리 포함)
 $ git add a.txt # 특정 파일
 $ git add my_folder/ # 특정 폴더
 $ git add a.txt b.txt c.txt # 복수의 파일
@@ -91,7 +91,7 @@ $ git commit -m 'First commit'
 
 
 
-## 기타 명령어
+## 2.기타 명령어
 
 ### 1. status
 
@@ -118,15 +118,60 @@ Date:   Tue Dec 29 14:10:59 2020 +0900
 $ git log --oneline
 f414b5a (HEAD -> master) First commit
 
-$ git log -2
+$ git log -2 # 그냥 git log랑 무슨 차이인지 모르겠네.
+commit 0838a38c2608fc3e1b9d52b836a4e88498384786 (HEAD -> master, origin/master)
+Author: dad0439 <dad0439@naver.com>
+Date:   Tue Dec 29 14:41:51 2020 +0900
 
+
+$ git log --oneline -1
 ```
 
 
 
+## 3. github(원격저장소)에 업로드 하기
+
+> 다양한 원격저장소 서비스 중에 Github를 기준으로 설명
+
+### 준비사항
+
+- Github에 비어 있는 저장소(repository)를 만든다.
 
 
 
+### 기초 명령어
+
+> **원격 저장소 설정**
+
+```bash
+$ git remote add origin https://.com/lee-seunghoon/practice.git
+# 깃, 원격저장소를(remote) 추가해줘(add) origin이라는 이름으로 URL
+
+$ git push origin master
+# origin 원격저장소의 master 브랜치로 push
+```
+
+- 이 작업 이 후 로그인
+
+- 설정된 원격저장소를 확인하기 위해서는 아래의 명령어를 입력한다.
+
+  ```bash
+  $ git remote -v
+  ```
+
+- 다음 origin 깃을 지워줘
+
+  ```bash
+  $ git remote rm origin
+  ```
+
+- 추가 업로드
+
+  ```bash
+  $ git push origin master
+  ```
+
+  
 
 
 
