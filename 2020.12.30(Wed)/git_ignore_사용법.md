@@ -33,6 +33,10 @@ $ touch .gitignore
 
 
 
+일반적으로, 개발환경/운영체제/특정 언어 등에서 임시 파일과 같이 개발 소스코드와 관련 없는 파일은 git으로 관리하지 않는다.
+
+* https://gitignore.io
+
 - ignore 을 도와주는 웹 사이트
 
   https://www.toptal.com/developers/gitignore
