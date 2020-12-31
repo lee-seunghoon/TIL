@@ -18,7 +18,7 @@ $ git config user.email 'sh0316@kakao.com'
 
 ## 2. 원격 저장소 받아오기
 
-- git clone
+- git clone https:// ...
 
 
 
@@ -28,4 +28,3 @@ $ git config user.email 'sh0316@kakao.com'
   - 내용 정리
   - commit
   - push
-  - 

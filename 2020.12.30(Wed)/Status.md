@@ -5,7 +5,7 @@
 
 
 ```bash
-					$ git status
+$ git status
 On branch master
 # 커밋될 변경사항들..
 # Staging Area O
