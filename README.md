@@ -45,4 +45,11 @@ I hope I never quit doing this project
 
 - [intro](./Tensorflow101/Tensorflow_01_intro.md)
 
+- [Process](./Tensorflow101/Tensorflow_02_process.md)
+
+- [Pandas](./Tensorflow101/Tensorflow_03_pandas.md)
+
+- [Practice_lemonade_prediction](./Tensorflow101/Tensorflow_04_practice.md)
+
   
+
