@@ -43,7 +43,7 @@ I hope I never quit doing this project
 
 ### Tensorflow
 
-- [intro](./Tensorflow101/Tensorflow_01_intro.md)
+- [Intro](./Tensorflow101/Tensorflow_01_intro.md)
 
 - [Process](./Tensorflow101/Tensorflow_02_process.md)
 
@@ -53,3 +53,12 @@ I hope I never quit doing this project
 
   
 
+### Python
+
+* [Config(개발환경설정)](./Python_learning/01.개발환경설정.md)
+
+* [Basic(기본)](./Python_learning/02.파이썬기본.md)
+
+* [Data Type(데이터유형)](./Python_learning/03.파이썬데이터유형.md)
+
+  
