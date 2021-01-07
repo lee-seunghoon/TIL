@@ -95,8 +95,10 @@
   
   for i in range(5):
     l = []
-    for _ in range(6):
-      l.append(rd.randint(1,46))
+    while len(l) != 6:
+      new_num = rd.randint(1,46)
+      if new_num not in l:
+          l.append(new_num)
     my_num.append(l)
     m =0
     for j in range(5) :  
@@ -121,9 +123,9 @@
       print('{}등 {}개'.format(i, grade))
     else :
       grade = n.count('꽝')
-      print('꽝 {}개'.format(grade))
+    print('꽝 {}개'.format(grade))
   ```
-
+  
   ```python
   # 어려운 버전
   
@@ -138,7 +140,7 @@
     while len(l) != 7:            # l 안에 원소 개수가 6개 아니면 계속 해. --> 6개면 멈춰 
       new_num = rd.randint(1,46)
       if new_num not in l:        # 중복을 제거하기 위해 생성한 숫자가 l 안에 있는지 검사
-        l.append(new_num)         # l 안에 똑같은 게 없으면 추가해버려
+          l.append(new_num)         # l 안에 똑같은 게 없으면 추가해버려
     my_num.append(l)
     m =0
     for j in range(6) :  
@@ -172,9 +174,9 @@
       print('{}등 {}개'.format(i, grade))
     else :
       grade = n.count('꽝')
-      print('꽝 {}개'.format(grade))
+    print('꽝 {}개'.format(grade))
   ```
-
+  
   
 
 ## Q5
@@ -184,28 +186,41 @@
 * 정답 코드
 
   ```python
-  # 문제는 소수 구하는 데이터가 너무 많아서 시간이 너무 오래 걸림...
-  # 어떤 수의 소인수를 구하는 함수를 만드는 게 가장 현실적임
+  # 꼼수 써서 0.45초
   
   
-  num = int(input('가장 큰 소인수 구할 숫자를 입력해주세요 : '))
-  sosu_list=[2]
-  m = 3
-  while m < num:    
-    for i in range(2,m):
-      if m % i != 0 and i == m-1 :
-        sosu_list.append(m)
-        m += 1
-      elif m % i == 0 :
-        m += 1
-    result = 0
-    
-    for i in sosu_list:
-      if num % i == 0 :
-        result = i
+  import time
+  start_time = time.time()
   
+  def sosu_cal(floor):
+    n=1
+    num = 3
+    sosu = [2]
+    while n < floor :
+      left = []
+      for i in sosu :
+        left.append(int(num % i))
+      if 0 not in left :
+        n += 1
+        sosu.append(num)
+        num += 1
+        left.clear
+      else :
+        num += 1
+        left.clear
+    return sosu
   
-  print('정답 :',result)  
+  s1 = sosu_cal(900)  # <== 소수 리스트를 미리 정해놓음
+  soinsu = []
+  num = 600851475143  # <== 여기 있는 숫자만 바꾸면 됨.
+  for i in s1 :
+    if num % i == 0 :  
+      soinsu.append(i)
+  print('정답 :',max(soinsu))
+  
+  end_time = time.time()
+  proceed_time = end_time-start_time
+  print('program time : {} sec'.format(round(proceed_time,2)))
   ```
 
 
@@ -217,15 +232,25 @@
 * 정답 코드
 
   ```python
+  import time
+  start_time = time.time()
+  
   m =1
   for i in range(100,1000):
       for r in range(100,1000):
           n = str(i * r)
           if n == n[::-1] and int(n) > m:
-              m = int(n)
+            m = int(n)
   print('정답 :',m)
+  
+  end_time = time.time()
+  proceed_time = end_time-start_time
+  print('program time : {} sec'.format(round(proceed_time,2)))
+  
+  
+  # 시간 소요 : 0.36 sec
   ```
-
+  
   
 
 ## Q7
@@ -235,15 +260,36 @@
 * 정답 코드
 
   ```python
-  # 진짜 쉽게 풀 수 있는 최대공배수 함수 이용
-  # math에 있는 함수는 매개변수 2개로 정해져 있구나...
-```
+  # 약 170초 ... 약 2분 50초 시간 소요...
+  # 정확하게 [program time : 169.40 sec]
   
-  ```python
-  # 나만의 알고리즘 짜기
+  import time
+  start_time = time.time()
   
+  result = 0
+  num = 2
+  while result == False :
+  
+    for i in range(1,21):
+      if num % i != 0 :
+        num += 1
+        break
+      elif num % i == 0 and i != 20 :
+        pass
+      elif num % i == 0 and i == 20 :
+        result = num
+  
+  print('정답 :',result)
+  
+  end_time = time.time()
+  proceed_time = end_time-start_time
+  print('program time : {} sec'.format(round(proceed_time,2)))
   ```
   
+  
+
+
+
   
 
 ## Q8
@@ -253,6 +299,11 @@
 * 정답 코드
 
   ```python
+  # 소요시간 0.0sec
+  
+  import time
+  start_time = time.time()
+  
   a = 0
   for i in range(1,101):
       a += i    
@@ -260,12 +311,16 @@
   
   jcob = 0
   for i in range(1,101):
-      c = i**2
+    c = i**2
       jcob += c
   
   print('정답 :', total - jcob)
+  
+  end_time = time.time()
+  proceed_time = end_time-start_time
+  print('program time : {} sec'.format(round(proceed_time,2)))
   ```
-
+  
   
 
 ## Q9
@@ -275,7 +330,36 @@
 * 정답 코드
 
   ```python
+  # 성공했지만.... 10001번째 소수 구하는 데 시간이 너무 오래 걸린다.
+  # program time : 71.55 sec
   
+  import time
+  start_time = time.time()
+  
+  def sosu_cal(floor):
+    n=1
+    num = 3
+    sosu = [2]
+    while n < floor :
+      left = []
+      for i in sosu :
+        left.append(int(num % i))
+      if 0 not in left :
+        n += 1
+        sosu.append(num)
+        num += 1
+        left.clear
+      else :
+        num += 1
+        left.clear
+    sosu.clear
+    print('정답 :',sosu_num) 
+  
+  sosu_cal(10001)
+  
+  end_time = time.time()
+  proceed_time = end_time-start_time
+  print('program time : {} sec'.format(round(proceed_time,2)))
   ```
 
 
