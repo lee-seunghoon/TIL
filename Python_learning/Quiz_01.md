@@ -55,22 +55,25 @@
 * 정답 코드
 
   ```python
-  # 문제가 있다..
-  # 만약 동률이 존재한다면 ==> 알파벳 순으로 제일 앞에 있는 문자를 출력
-  
   t1 = 'This is a sample Program mississippi river'
   t2 = 'abcdabcdababccddcd'
   
   def text_judge(text):
-    long = 0
-    text = text.upper()
-    for i in text :
-      if text.count(i) <= long:
-        pass
-      else :
-        long = text.count(i)
-        result = i
-    return result
+      long = 1
+      text = text.upper()
+      new_text = list(set(text))
+      
+      
+      for i in new_text :
+          if text.count(i) < long:
+              pass
+          elif text.count(i) > long :
+              long = text.count(i)
+              result = i
+          elif text.count(i) == long :
+              if i < result :
+                  result = i
+      return result
   
   print('정답 : "{}" =>'.format(t1), text_judge(t1))
   print('정답 : "{}" =>'.format(t2), text_judge(t2))
