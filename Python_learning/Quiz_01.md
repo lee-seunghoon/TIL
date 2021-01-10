@@ -374,8 +374,15 @@
 * 정답 코드
 
   ```python
-  
+  for i in range(2,1000):
+      for j in range(i+1,1001):
+        if i**2 + j**2 == (1000-(i+j))**2 and j < 1000 - (i + j) :
+              a = i
+              b = j
+              c = 1000 - (i + j)
+              
+  print('정답 :', a*b*c)
   ```
-
+  
   
 
