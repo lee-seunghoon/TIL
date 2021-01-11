@@ -203,15 +203,72 @@ displ(배기량)이 4 이하인 자동차와 5 이상인 자동차 중 어떤 �
 * 정답코드
 
   ```python
-  # 내가 생각한 알고리즘
-  # audi의 hwy를 쭉 뽑은 후
-  # sort로 오름차순 정렬
-  # 그 정렬된 hwy리스트로 audi 차 중에서 매치되는 모델명 쭉 뽑아 (for문 써야겠네)
-  # 그리고 for문으로 5개까지만 추출해
-  ```
+  class Car():
+      def __init__(self, car_data):
+          self.manufacturer = car_data[0]
+          self.model = car_data[1]
+          self.displ = float(car_data[2])
+          self.year = int(car_data[3])
+          self.cyl = float(car_data[4])
+          self.trans = car_data[5]
+          self.drv = car_data[6]
+          self.cty = float(car_data[7])
+          self.hwy = float(car_data[8])
+          self.fl = car_data[9]
+          self.car_class = car_data[10]
   
-  ```python
   
+  def extract(file):
+      line1 = file.readline()
+      
+      if line1 :
+          car_data = line1.split(',',10)
+      elif not line1 :
+          car_data = list(line1)
+      return car_data
+  
+  
+  def model_hwy_rank5(manufacturer):  # 제조사별 모델과 고속도로 연비 묶어서 5순위 자료 출력 함수
+      data = open('mpg.txt', 'r')
+      data.readline()
+      model_hwy = []
+      while True:
+          car_data = extract(data)
+          if not car_data:
+              break
+          car = Car(car_data)
+          if car.manufacturer == manufacturer :
+              tup_model_hwy = (car.model,car.hwy)
+              model_hwy.append(tup_model_hwy)
+              
+      hwy = []
+      for i in model_hwy:
+          list(i)
+          hwy.append(i[1])
+  
+      hwy = set(hwy)
+      hwy = list(hwy)
+      hwy.sort(reverse=True)
+  
+      manufacturer_hwy = []
+      for i in hwy :
+          for j in model_hwy:
+              list(j)
+              if j[1] == i :
+                  new = (j[0],i)
+                  new = list(new)
+                  manufacturer_hwy.append(new)
+      
+      for i in range(5):
+          print('{} 모델 : {}, 연비 : {}'\
+                       .format(manufacturer,manufacturer_hwy[i][0], manufacturer_hwy[i][1]))
+      
+      hwy.clear()
+      model_hwy.clear()
+      manufacturer_hwy.clear()
+      data.close()
+  
+  model_hwy_rank5('audi')
   ```
   
   
