@@ -285,6 +285,108 @@ mpg 데이터는 연비를 나타내는 변수가 2개입니다.
 * 정답 코드
 
   ```python
+  class Car():
+      def __init__(self, car_data):
+          self.manufacturer = car_data[0]
+          self.model = car_data[1]
+          self.displ = float(car_data[2])
+          self.year = int(car_data[3])
+          self.cyl = float(car_data[4])
+          self.trans = car_data[5]
+          self.drv = car_data[6]
+          self.cty = float(car_data[7])
+          self.hwy = float(car_data[8])
+          self.fl = car_data[9]
+          self.car_class = car_data[10]
+      
+      def y_mean(self):
+          return (self.cty + self.hwy)/2
+  
+  
+  def extract(file):
+      line1 = file.readline()
+      
+      if line1 :
+          car_data = line1.split(',',10)
+      elif not line1 :
+          car_data = list(line1)
+      return car_data
+   
+  
+  
+  def car_names():     # 전체 자동차 브랜드 구하기
+      data = open('mpg.txt', 'r')
+      data.readline()
+      car_name = []
+      while True:
+          car_data = extract(data)
+          if not car_data:
+              break
+          car = Car(car_data)
+          car_name.append(car.manufacturer)
+          
+      car_name = set(car_name)
+      car_name = list(car_name)
+      car_name.sort()
+      data.close()
+      return car_name
+   
+      
+  def suv_mean(car_list1):     # 전체 제조사 중 SUV의 hwy,cty평균의 평균연비 구하기
+      data = open('mpg.txt', 'r')
+      data.readline()
+      
+      y_list = []         
+      while True: 
+          car_data = extract(data)
+          if not car_data:
+              break
+          car = Car(car_data)        
+          if car.car_class == 'suv\n':
+              y_mean = car.y_mean()
+              y_list.append((car.manufacturer,y_mean))
+      
+      sum_list = []        # 평균연비들의 평균 구하기
+      for i in car_list1 :
+          y_sum = 0
+          y_len = 0
+          for j in y_list :
+              j = list(j)
+              if j[0] == i :
+                  y_sum += j[1]
+                  y_len += 1
+          try:
+              sum_list.append((i, round((y_sum/y_len),3)))
+          except Exception as err :
+              sum_list.append((i, 0))
+      
+      only_y = []        # 연비만 따로 떼어내서 내림차순 적용
+      for i in sum_list :
+          list(i)
+          only_y.append(i[1])        
+      only_y.sort(reverse=True)
+      set(only_y)
+      list(only_y)
+      
+      result_list = []   # 내림차순 적용 후 연비에 맞는 제조사 묶기
+      for i in only_y :
+          for j in sum_list :
+              list(j)
+              if j[1] == i :
+                  result_list.append([j[0],i])
+      
+      for i in range(5):
+          print('{}위 : {} 평균 연비 {}'.format(i+1,result_list[i][0],result_list[i][1]))
+          
+      result_list.clear()
+      only_y.clear()
+      sum_list.clear()
+      y_list.clear()
+      data.close()
+  
+  car_list = car_names()
+  print(car_list)
+  suv_mean(car_list)
   
   ```
 
@@ -316,9 +418,96 @@ hwy(고속도로 연비) 평균이 가장 높은 회사 세 곳을 출력하세�
 * 정답 코드
 
   ```python
+  class Car():
+      def __init__(self, car_data):
+        self.manufacturer = car_data[0]
+          self.model = car_data[1]
+          self.displ = float(car_data[2])
+          self.year = int(car_data[3])
+          self.cyl = float(car_data[4])
+          self.trans = car_data[5]
+          self.drv = car_data[6]
+          self.cty = float(car_data[7])
+          self.hwy = float(car_data[8])
+          self.fl = car_data[9]
+          self.car_class = car_data[10]
+      
+      def y_mean(self):
+          return (self.cty + self.hwy)/2
   
+  
+  def extract(file):
+      line1 = file.readline()
+      
+      if line1 :
+          car_data = line1.split(',',10)
+      elif not line1 :
+          car_data = list(line1)
+      return car_data
+   
+  
+  
+  def car_names():     # 전체 자동차 브랜드 구하기
+      data = open('mpg.txt', 'r')
+      data.readline()
+      car_name = []
+      while True:
+          car_data = extract(data)
+          if not car_data:
+              break
+          car = Car(car_data)
+          car_name.append(car.manufacturer)
+          
+      car_name = list(set(car_name))
+  #     car_name = list(car_name)
+      car_name.sort()
+      data.close()
+      return car_name
+  
+  def carhwy(manufacturer):     # 제조사별 고속도로 연비 평균 구하는 함수
+      data = open('mpg.txt', 'r')
+      data.readline()
+      all_hwy = []
+      while True:
+          car_data = extract(data)
+          if not car_data:
+              break
+          car = Car(car_data)
+          if car.manufacturer == manufacturer :
+              all_hwy.append(car.hwy)
+             
+      hwy_mean = sum(all_hwy)/len(all_hwy)
+      all_hwy.clear()
+      data.close()
+      return round(hwy_mean,2)
+  
+  def car_name_hwy(car_names) :    # ==> 자동차별 hwy 평균 구하는 함수
+      car_name = car_names
+      car_name_hwy = []
+      for i in car_name:
+          hwy_mean = carhwy(i)
+          car_name_hwy.append((i, hwy_mean))
+  
+      only_hwy = []
+      for i in car_name_hwy:
+          only_hwy.append(i[1])
+  
+      only_hwy.sort(reverse=True)
+      result = []
+      for i in only_hwy:
+          for j in car_name_hwy :
+              if j[1] == i :
+                  result.append((j[0],i))
+      return result
+  
+  car_name = car_names()
+  answer = car_name_hwy(car_name)
+  
+  for i in range(3) :
+      print('평균 hwy {}위 자동차 : {} / hwy : {}'.format(i+1, answer[i][0], answer[i][1]))
+      
   ```
-
+  
   
 
 ## Q8
