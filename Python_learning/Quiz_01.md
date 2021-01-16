@@ -62,11 +62,12 @@
       long = 1
       text = text.upper()
       new_text = list(set(text))
+      result = 'A'
       
       
       for i in new_text :
           if text.count(i) < long:
-              pass
+                pass
           elif text.count(i) > long :
               long = text.count(i)
               result = i
@@ -88,96 +89,163 @@
 * 정답코드
 
   ```python
-  # 쉬운 버전
-  
   import random as rd
   
-  lotto = [2, 13, 16, 19, 32, 33]
-  my_num = []
-  n = []
   
-  for i in range(5):
-    l = []
-    while len(l) != 6:
-      new_num = rd.randint(1,46)
-      if new_num not in l:
-          l.append(new_num)
-    my_num.append(l)
-    m =0
-    for j in range(5) :  
-      if my_num[i][j] in lotto :
-        m += 1
-    if m >= 6 :
-      n.append('1등')
-    elif m >= 5:
-      n.append('2등')
-    elif m >= 4:
-      n.append('3등')
-    elif m >= 3:
-      n.append('4등')
-    elif m >= 2:
-      n.append('5등')
-    else :
-      n.append('꽝')
+  class Auto_lotto_5():
+      
+      def __init__(self):
+          self.num = []
+          self.lotto_all = []
+          
+          
+      def thisweek_lotto_num(self):
+          while len(self.num) < 6:
+              num = rd.randint(1,46)
+              if num not in self.num:
+                  self.num.append(num)
+          return self.num
+          
+      
+      def lotto_maker(self):
+          for _ in range(5):
+              self.lotto_one = []
+              while len(self.lotto_one) < 6:
+                  num = rd.randint(1,46)
+                  if num not in self.lotto_one:
+                      self.lotto_one.append(rd.randint(1,46))
+              self.lotto_all.append(self.lotto_one)   
+          return self.lotto_all
+      
+      
+      def result(self):
+          rank = []
+          for i in self.lotto_all:
+              n = 0
+              for j in i :
+                  if j in self.num:
+                      n += 1
+              if n >= 6:
+                  rank.append('1등')
+              elif n >= 5:
+                  rank.append('2등')
+              elif n >= 4:
+                  rank.append('3등')
+              elif n >= 3:
+                  rank.append('4등')
+              else :
+                  rank.append('꽝')
+          print('1등 {}개, 2등 {}개, 3등 {}개, 4등 {}개, 꽝 {}개'\
+                .format(rank.count('1등'),rank.count('2등'),\
+                        rank.count('3등'),rank.count('4등'),\
+                            rank.count('꽝')))
+                  
+                  
+  lotto = Auto_lotto_5()
+  lotto.thisweek_lotto_num()
+  lotto.lotto_maker()
+  lotto.result()
   
-  for i in range(1,6):
-    if i <= 4 :
-      grade = n.count('{}등'.format(i))
-      print('{}등 {}개'.format(i, grade))
-    else :
-      grade = n.count('꽝')
-    print('꽝 {}개'.format(grade))
+  
   ```
   
   ```python
-  # 어려운 버전
-  
   import random as rd
   
-  lotto = [2, 13, 16, 19, 32, 33]
-  my_num = []
-  n = []
   
-  for i in range(5):
-    l = []
-    while len(l) != 7:            # l 안에 원소 개수가 6개 아니면 계속 해. --> 6개면 멈춰 
-      new_num = rd.randint(1,46)
-      if new_num not in l:        # 중복을 제거하기 위해 생성한 숫자가 l 안에 있는지 검사
-          l.append(new_num)         # l 안에 똑같은 게 없으면 추가해버려
-    my_num.append(l)
-    m =0
-    for j in range(6) :  
-      if my_num[i][j] in lotto :
-        m += 1
-    if m >= 6 :
-      n.append('1등')
-    elif m >= 5 and my_num[i][6] in lotto :
-      n.append('2등')
-    elif m >= 5:
-      n.append('3등')
-    elif m >= 4:
-      n.append('4등')
-    elif m >= 3:
-      n.append('5등')
-    else :
-      n.append('꽝')
-  
-  print('로또번호를 5회 생성합니다.')
-  print('당신의 번호는 다음과 같습니다.')
-  print('(맨 마지막 번호는 보너스 번호입니다.)')
-  print('='*20)
-  for x in my_num :
-    print(x)
-  print('='*20)
-  print('결과는?')
-  
-  for i in range(1,7):
-    if i <= 5 :
-      grade = n.count('{}등'.format(i))
-      print('{}등 {}개'.format(i, grade))
-    else :
-      grade = n.count('꽝')
-    print('꽝 {}개'.format(grade))
+  class Auto_lotto_5():
+      
+      def __init__(self):
+          self.num = []
+          self.lotto_all = []
+          
+          
+      def thisweek_lotto_num(self):
+          while len(self.num) < 6:
+              num = rd.randint(1,46)
+              if num not in self.num:
+                  self.num.append(num)
+          return self.num
+          
+      
+      def lotto_maker(self):
+          for _ in range(5):
+              self.lotto_one = []
+              while len(self.lotto_one) < 6:
+                  num = rd.randint(1,46)
+                  if num not in self.lotto_one:
+                      self.lotto_one.append(rd.randint(1,46))
+              self.lotto_all.append(self.lotto_one)   
+          return self.lotto_all
+      
+      
+      def lotto_maker_bonus(self):
+          for _ in range(5):
+              self.bonus = []
+              while len(self.bonus) < 7:
+                  num = rd.randint(1,46)
+                  if num not in self.bonus:
+                      self.bonus.append(rd.randint(1,46))
+              self.lotto_all.append(self.bonus)   
+          return self.lotto_all
+      
+      
+      def result(self):
+          rank = []
+          for i in self.lotto_all:
+              n = 0
+              for j in i :
+                  if j in self.num:
+                      n += 1
+              if n >= 6:
+                  rank.append('1등')
+              elif n >= 5:
+                  rank.append('2등')
+              elif n >= 4:
+                  rank.append('3등')
+              elif n >= 3:
+                  rank.append('4등')
+              else :
+                  rank.append('꽝')
+          print('1등 {}개, 2등 {}개, 3등 {}개, 4등 {}개, 꽝 {}개'\
+                .format(rank.count('1등'),rank.count('2등'),\
+                        rank.count('3등'),rank.count('4등'),\
+                            rank.count('꽝')))
+              
+              
+      def result_bonus(self):
+           
+          rank = []
+          for i in self.lotto_all:
+              n = 0
+              m = 0
+              if i[-1] in self.num:
+                  m = 1
+              for j in i[:-1] :
+                  if j in self.num:
+                      n += 1
+              if n == 6:
+                  rank.append('1등')
+              elif m + n == 6 :
+                  rank.append('2등')
+              elif n == 5:
+                  rank.append('3등')
+              elif n == 4:
+                  rank.append('4등')
+              elif n == 3:
+                  rank.append('5등')    
+              else :
+                  rank.append('꽝')
+          print('1등 {}개, 2등 {}개, 3등 {}개, 4등 {}개, 5등 {}개 꽝 {}개'\
+                .format(rank.count('1등'),rank.count('2등'),\
+                        rank.count('3등'),rank.count('4등'),\
+                      rank.count('5등'),rank.count('꽝')))
+                  
+                  
+  lotto = Auto_lotto_5()
+  lotto.thisweek_lotto_num()
+  lotto.lotto_maker_bonus()
+  lotto.result_bonus()
   ```
   
   
