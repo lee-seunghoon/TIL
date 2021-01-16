@@ -403,7 +403,100 @@ class별 cty 평균을 구하고 cty 평균이 높은 순으로 정렬해 출력
 * 정답 코드
 
   ```python
+  class Car_data():
+      def __init__(self, file_name, load_type):
+          self.file_name = file_name
+          self.load_type = load_type
+          self.data = open(self.file_name, self.load_type)
+          self.data.readline()
+          self.all_data = []
+          
+      def load(self):  # ==> 전체 data에서 각 1줄을 split해서 list 형식으로 담는 함수 
+          for i in self.data.readlines():
+              i=i.split(',')
+              self.all_data.append(i)
+          return self.all_data
+      
+      def close(self):
+          return self.data.close()
+      
+  class Car(Car_data):
+      def __init__(self, file_name, load_type):
+          super().__init__(file_name, load_type)
+      
+          
+      def all_brand(self):  # ==> 전체 manufacturer 알고 싶을 때 사용하는 함수
+          super().load()
+          self.brand = []
+          for i in self.all_data:
+              self.brand.append(i[0])
+          self.brand = list(set(self.brand))
+          self.brand.sort()
+          return self.brand
+      
+      
+      def all_class(self): # ==> 전체 class_type 알고 싶을 때 사용하는 함수
+          super().load()
+          self.class_all = []
+          for i in self.all_data:
+              self.class_all.append(i[-1])
+          self.class_all = list(set(self.class_all))
+          self.class_all.sort()
+          return self.class_all
+      
+      
+      def class_cty_mean(self): # ==> class별 cty 평균 구할 때 사용하는 함수
+          super().load()
+          self.cty_mean = []
+          for i in self.all_class():
+              cty_sum = []
+              for j in self.all_data:
+                  if j[-1] == i :
+                      cty_sum.append(float(j[-4]))
+              cty_mean = sum(cty_sum)/len(cty_sum)
+              self.cty_mean.append([i,round(cty_mean,2)])
+          return self.cty_mean
+      
+      
+      def brand_compact_count(self): # ==> 전체 manufacturer 알고 싶을 때 사용하는 함수
+          super().load()
+          self.count = []
+          for i in self.all_brand():
+              n = 0
+              for j in self.all_data:
+                  if j[0] == i and j[-1]=='compact\n':
+                      n += 1
+              self.count.append([i,n])
+          return self.count
+      
+      
+      def value_ascending(self,data):# ==> [[data,num]] 형식에서 num 내림차순으로 정렬할 때 사용하는 함수
+          self.num = []
+          for i in data:
+              self.num.append(i[1])
+          self.num = list(set(self.num))
+          self.num.sort(reverse = True)
+          
+          self.combine = []
+          for i in self.num:
+              for j in data:
+                  if j[1]==i :
+                      self.combine.append([j[0],i])
+          return self.combine
+              
+          
+              
+  car = Car('mpg.txt', 'r')
+  cty_mean= car.class_cty_mean()
+  class_cty_mean = car.value_ascending(cty_mean)
   
+  n =1
+  for i in class_cty_mean:
+      i[0] = i[0].replace('\n','')
+      print('{}번째 cty 평균 class type : [{}] , cty 평균 : [{}]'.format(n, i[0],i[1]))
+      n +=1
+  
+  car.close()
   ```
   
   
@@ -528,17 +621,21 @@ hwy(고속도로 연비) 평균이 가장 높은 회사 세 곳을 출력하세�
           self.data.readline()
           self.all_data = []
           
-      def load(self):
+      def load(self):  # ==> 전체 data에서 각 1줄을 split해서 list 형식으로 담는 함수 
           for i in self.data.readlines():
               i=i.split(',')
               self.all_data.append(i)
           return self.all_data
       
+      def close(self):
+          return self.data.close()
+      
   class Car(Car_data):
       def __init__(self, file_name, load_type):
           super().__init__(file_name, load_type)
+      
           
-      def all_brand(self):
+      def all_brand(self):  # ==> 전체 manufacturer 알고 싶을 때 사용하는 함수
           super().load()
           self.brand = []
           for i in self.all_data:
@@ -547,7 +644,31 @@ hwy(고속도로 연비) 평균이 가장 높은 회사 세 곳을 출력하세�
           self.brand.sort()
           return self.brand
       
-      def brand_compact_count(self):
+      
+      def all_class(self): # ==> 전체 class_type 알고 싶을 때 사용하는 함수
+          super().load()
+          self.class_all = []
+          for i in self.all_data:
+              self.class_all.append(i[-1])
+          self.class_all = list(set(self.class_all))
+          self.class_all.sort()
+          return self.class_all
+      
+      
+      def class_cty_mean(self): # ==> class별 cty 평균 구할 때 사용하는 함수
+          super().load()
+          self.cty_mean = []
+          for i in self.all_class():
+              cty_sum = []
+              for j in self.all_data:
+                  if j[-1] == i :
+                      cty_sum.append(float(j[-4]))
+              cty_mean = sum(cty_sum)/len(cty_sum)
+              self.cty_mean.append([i,round(cty_mean,2)])
+          return self.cty_mean
+      
+      
+      def brand_compact_count(self): # ==> 전체 manufacturer 알고 싶을 때 사용하는 함수
           super().load()
           self.count = []
           for i in self.all_brand():
@@ -558,7 +679,8 @@ hwy(고속도로 연비) 평균이 가장 높은 회사 세 곳을 출력하세�
               self.count.append([i,n])
           return self.count
       
-      def value_ascending(self,data):
+      
+      def value_ascending(self,data):# ==> [[data,num]] 형식에서 num 내림차순으로 정렬할 때 사용하는 함수
           self.num = []
           for i in data:
               self.num.append(i[1])
@@ -582,30 +704,6 @@ hwy(고속도로 연비) 평균이 가장 높은 회사 세 곳을 출력하세�
       print('{}번째 compact 생산 회사 : {}, 수 : {}'\
             .format(i+1,result[i][0],result[i][1]))
   
+  car.close()
   ```
-  
-  
-
-## Q9
-
-없음
-
-* 정답 코드
-
-  ```python
-  
-  ```
-
-
-
-## Q10
-
-없음
-
-* 정답 코드
-
-  ```python
-  
-  ```
-
   
