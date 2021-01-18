@@ -339,18 +339,84 @@
   
   result = 0
   num = 2
-  while result == False :
+  while not result :
   
     for i in range(1,21):
       if num % i != 0 :
         num += 1
         break
-      elif num % i == 0 and i != 20 :
-        pass
       elif num % i == 0 and i == 20 :
         result = num
   
   print('정답 :',result)
+  
+  end_time = time.time()
+  proceed_time = end_time-start_time
+  print('program time : {} sec'.format(round(proceed_time,2)))
+  ```
+  
+  ```python
+  <2차 코드>
+  class Sosu():
+      def __init__(self):
+          self.whole_sosu = [2]
+          self.sosu_num = 1
+          self.test_num = 3
+          
+      def sosu_list(self,num):
+          self.num = num
+          
+          while self.sosu_num < self.num:
+              for i in self.whole_sosu:
+                  if self.test_num % i != 0 and self.whole_sosu[-1] == i:
+                      self.whole_sosu.append(self.test_num)
+                      self.sosu_num += 1
+                  elif self.test_num % i == 0 :    
+                      break
+                  else :
+                      continue
+              self.test_num +=1
+          return self.whole_sosu
+      
+      def sosu_max(self,num):
+          return max(self.sosu_list(num))
+      
+      def sosu_divide(self,num):
+          self.standard = num
+          
+          while True:
+              for i in self.whole_sosu:
+                  if self.test_num % i != 0 and self.whole_sosu[-1] == i:
+                      self.whole_sosu.append(self.test_num)
+                      self.sosu_num += 1
+                  elif self.test_num % i == 0 :    
+                      break
+                  else :
+                      continue
+              if self.standard == self.test_num :
+                  break
+              self.test_num +=1
+          
+          self.result = 1
+          for i in self.whole_sosu:
+              self.result *= i
+             
+          for i in range(1,num+1):
+              if i not in self.whole_sosu:
+                  if self.result % i == 0:
+                      continue
+                  else:
+                      self.result *= i/(self.result % i)
+          return int(self.result)
+          
+      
+  import time
+  start_time = time.time()
+  
+  sosu = Sosu()
+  print('정답 :',sosu.sosu_divide(20))
+  print(sosu.whole_sosu)
+  
   
   end_time = time.time()
   proceed_time = end_time-start_time
@@ -401,9 +467,12 @@
 * 정답 코드
 
   ```python
-  # 성공했지만.... 10001번째 소수 구하는 데 시간이 너무 오래 걸린다.
-  # program time : 71.55 sec
+  # 성공했지만.... 10001번째 소수 구하는 데 시간이 너무 오래 걸린다. 더 줄이고 싶다.
+  # 1차 program time : 72sec 정도
+  # 2차 program time : 10.62 sec
   
+  '''
+  (1차 코드)
   import time
   start_time = time.time()
   
@@ -431,7 +500,45 @@
   end_time = time.time()
   proceed_time = end_time-start_time
   print('program time : {} sec'.format(round(proceed_time,2)))
+  '''
+  
+  # <2차코드>
+  class Sosu():
+      def __init__(self):
+          self.whole_sosu = [2]
+          self.sosu_num = 1
+          self.test_num = 3
+          
+      def sosu_list(self,num):
+          self.num = num
+          
+          while self.sosu_num < self.num:
+              for i in self.whole_sosu:
+                  if self.test_num % i != 0 and self.whole_sosu[-1] == i:
+                      self.whole_sosu.append(self.test_num)
+                      self.sosu_num += 1
+                  elif self.test_num % i == 0 :    
+                      break
+                  else :
+                      continue
+              self.test_num +=1
+          return self.whole_sosu
+      
+      def sosu_max(self,num):
+          return max(self.sosu_list(num))
+      
+  import time
+  start_time = time.time()
+  
+  sosu = Sosu()
+  print('정답 :',sosu.sosu_max(10001))
+  
+  end_time = time.time()
+  proceed_time = end_time-start_time
+  print('program time : {} sec'.format(round(proceed_time,2)))
   ```
+
+
 
 
 
