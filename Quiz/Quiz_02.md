@@ -12,56 +12,51 @@ displ(배기량)이 4 이하인 자동차와 5 이상인 자동차 중 어떤 �
 
   ```python
   class Car_data():
-      
       def __init__(self, file_name, load_type):
           self.file_name = file_name
           self.load_type = load_type
           self.data = open(self.file_name, self.load_type)
-          self.line = []
-      
-      def load(self):
-          while True :
-              line = self.data.readline()
-              if not bool(line) :
-                  break
-              line = line.split(',')
-              self.line.append(line)
-          return self.line
+          self.data.readline()
+          self.all_data = []
+          
+      def load(self):  # ==> 전체 data에서 각 1줄을 split해서 list 형식으로 담는 함수 
+          for i in self.data.readlines():
+              i=i.split(',')
+              self.all_data.append(i)
+          return self.all_data
       
       def close(self):
-          return self.data.close
-              
-  
-  car1 = Car_data('mpg.txt','r')
-  car = car1.load()
-  # print(len(car)) ==> 맨 위 매뉴 빼고 234개 data
-  # print(car[0])   ==> 카테고리 보고 싶을 때
-  
-  
-  hwy4 = 0
-  n4 = 0
-  hwy5 = 0
-  n5 = 0
+          return self.data.close()
       
-  for i in range(1,235):    
-      if float(car[i][2]) <= 4. :
-          hwy4 += float(car[i][-3])
-          n4 += 1
-      else :
-          hwy5 += float(car[i][-3])
-          n5 += 1
+  class Car(Car_data):
+      def __init__(self, file_name, load_type):
+          super().__init__(file_name, load_type)
+      
+      def displ_hwy(self):
+          super().load()
+          hwy_4 = []
+          self.hwy_5 = []
+          for i in self.all_data:
+              if float(i[2]) <= 4.0 :
+                  hwy_4.append(int(i[-3]))
+              elif float(i[2]) >= 5.0:
+                  self.hwy_5.append(int(i[-3]))
+          hwy_4_mean = sum(hwy_4)/len(hwy_4)
+          hwy_5_mean = sum(self.hwy_5)/len(self.hwy_5)
+          return hwy_4_mean,hwy_5_mean
   
-  hwy4_mean = hwy4 / n4
-  hwy5_mean = hwy5 / n5
+  car = Car('mpg.txt', 'r')
+  hwy_4_mean,hwy_5_mean = car.displ_hwy()
   
-  # print(hwy4_mean, hwy5_mean)
+  print(hwy_4_mean)
+  print(hwy_5_mean)
   
-  if hwy4_mean > hwy5_mean :
-      print('배기량이 4이하인 자동차의 고속도로연비가 평균적으로 더 높습니다.')
-  elif hwy4_mean < hwy5_mean:
-      print('배기량이 5이상인 자동차의 고속도로연비가 평균적으로 더 높습니다.')
+  '''
+  25.96319018404908
+  18.07894736842105
+  '''
   
-  
+  car.close()
   ```
   
   
@@ -164,7 +159,7 @@ displ(배기량)이 4 이하인 자동차와 5 이상인 자동차 중 어떤 �
       return car_data
   
   
-  def carhwy(manufacturer):
+  def carhwy(manufacturer):     # 제조사별 총 고속도로 연비 구하는 함수
       data = open('mpg.txt', 'r')
       data.readline()
       all_hwy = []
@@ -175,21 +170,18 @@ displ(배기량)이 4 이하인 자동차와 5 이상인 자동차 중 어떤 �
           car = Car(car_data)
           if car.manufacturer == manufacturer :
               all_hwy.append(car.hwy)
-             
-      hwy_mean = sum(all_hwy)/len(all_hwy)
-      all_hwy.clear()
+      
       data.close()
-      return round(hwy_mean,2)
-  
+      return all_hwy
   
   
   chevrolet_carhwy = carhwy('chevrolet')
   ford_carhwy = carhwy('ford')
   honda_carhwy = carhwy('honda')
   
-  print('''chevrolet의 고속도로 연비 평균 : {}
-  ford의 고속도로 연비 평균 : {}
-  honda의 고속도로 연비 평균 : {}'''.format(chevrolet_carhwy,ford_carhwy,honda_carhwy))
+  all_sum = chevrolet_carhwy + ford_carhwy + honda_carhwy
+  print('hwy(고속도로 연비) 평균 :', sum(all_sum) / len(all_sum))
+  # ==> hwy(고속도로 연비) 평균 : 22.50943396226415
   ```
 
 
@@ -458,7 +450,7 @@ class별 cty 평균을 구하고 cty 평균이 높은 순으로 정렬해 출력
           return self.cty_mean
       
       
-      def brand_compact_count(self): # ==> 전체 manufacturer 알고 싶을 때 사용하는 함수
+      def brand_compact_count(self): # ==> 전체 manufacturer 별 compact 수 알고 싶을 때 사용하는 함수
           super().load()
           self.count = []
           for i in self.all_brand():
@@ -668,7 +660,7 @@ hwy(고속도로 연비) 평균이 가장 높은 회사 세 곳을 출력하세�
           return self.cty_mean
       
       
-      def brand_compact_count(self): # ==> 전체 manufacturer 알고 싶을 때 사용하는 함수
+      def brand_compact_count(self): # ==> 전체 manufacturer 별 compact 수 알고 싶을 때 사용하는 함수
           super().load()
           self.count = []
           for i in self.all_brand():
