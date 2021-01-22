@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script
+            src="https://code.jquery.com/jquery-2.2.4.min.js"
+            integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+            crossorigin="anonymous"></script>
+    <script src = 'js/jQuery_exec.js'></script>
+</head>
+<body>
+    <!-- element : html 구성요소 ('시작tag' 부터 '끝tag' 까지) -->
+    <!-- tag : <>로 구성되는 html 요소 -->
+    <!-- element의 종류는 크게 2가지 있다.
+         block level element : element가 한 line을 완전히 차지한다.
+         inline element : element가 해당 내용만 영역을 차지한다.-->
+
+    <h1>여기는 h1입니다.(headline 형태 크기와 모양)</h1>
+    <ul>   <!-- unordered list (<ul>은 순서가 없는 list 형식) -->
+        <li class="region">서울</li>  <!-- <li>는 그 list 안의 값을 보여주는 tag -->
+        <li id="inchon">인천</li>
+        <li>부산</li>
+    </ul>
+
+    <ol>  <!-- 순서가 있는 list 표현 -->
+        <li>김연아</li>
+        <li>홍길동</li>
+        <li>아이유</li>
+    </ol>
+
+    <!-- <div>는 그 안에 있는 내용을 논리적인 영역으로 구분 / div는 block level element -->
+    <div> 여기는 div 영역 </div>
+
+    <!-- <span> 또한 div 같이 영역 잡는 tag / span영역은 inline element다! -->
+    <span class="region"> 여기는 span 영역 </span>
+
+    <!-- img tag (끝 tag가 없다./ input이랑 비슷하네)-->
+    <img src = 'img/english.jpg'>
+    <br><br>
+    <input type = 'button' value="클릭!"
+            onclick='my_func()'>
+</body>
+</html>
