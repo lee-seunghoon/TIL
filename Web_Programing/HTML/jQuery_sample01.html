@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script
+            src="https://code.jquery.com/jquery-2.2.4.min.js"
+            integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+            crossorigin="anonymous"></script>
+    <script src="js/jQuery_sample01.js"></script>
+</head>
+<body>
+
+    <div>
+        <ul>
+            <li id="apple">사과</li>
+            <li id="pineapple">파인애플</li>
+            <li class="mylist">참외</li>
+        </ul>
+
+        <!-- 아래 '사용자 입력 양식'이라고 한다.
+        사용자 입력 양식의 목적은 : 사용자로부터 데이터를 입력 받아서 서버로 전송!
+        'form' tag를 통해 사용자 입력 양식으로 지정-->
+        <form action="#" method="post">
+        <!-- action 뒤에는 data를 넣어줄 서버쪽 프로그램명을 입력해준다.  -->
+        <!-- method 뒤에는 요청방식을 입력해준다.-->
+            <input type="text" id="uId" size="20">
+        </form>
+        <ol>
+            <li class="mylist">고양이</li>
+            <li class="mylist">호랑이</li>
+            <li class="mylist">강아지</li>
+        </ol>
+    </div>
+
+    <input type="button" value="click"
+           onclick="my_func()">
+</body>
+</html>

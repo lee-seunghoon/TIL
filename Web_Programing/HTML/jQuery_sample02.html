@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script
+            src="https://code.jquery.com/jquery-2.2.4.min.js"
+            integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+            crossorigin="anonymous"></script>
+    <script src="js/jQuery_sample02.js"></script>
+
+    <style>
+        /*class 속성 이용해서 지정하는 것이 일반적이다.*/
+        .myStyle {
+            width : 300px;
+            height : 100px;
+            background-color: yellow;
+        }
+        /*div {*/
+        /*    width : 100px;*/
+        /*    height : 50px;*/
+        /*    background-color: yellow;*/
+        /*}*/
+    </style>
+</head>
+<body>
+    <div>이것은 소리없는 아우성! <br><br></div>
+    <div class="myStyle">
+        <ol>
+            <li>홍길동</li>
+            <li>김연아</li>
+        </ol>
+    </div>
+
+    <!-- 속성을 이용해서 버튼 활성화 막기 -->
+    <input type="button" value="클릭되나요?"
+            disabled="disabled">
+
+    <input type="button" value="클릭"
+           onclick="my_func()">
+    <input type="button" value="스타일제거"
+            onclick="remove_func()">
+</body>
+</html>
