@@ -8,12 +8,12 @@
 
 ### library 
 
-: 특정 기능을 수행하는 코드 묶음 (ex. 함수, 클래스)
+: 특정 `기능`을 수행하는 코드 묶음 (ex. 함수, 클래스)
   전체적으로 내가 원하는 logic이나 algorithm을 제공해주진 않는다.
 
 ### Framework 
 
-: library의 확장버전으로 생각하면 좋다. 전체적인 system 즉, logic이 만들어져 있다.
+: library의 확장버전으로 생각하면 좋다. 전체적인 `system` 즉, `logic`이 만들어져 있다.
   사용하려면 이 framework 작동하는 방법을 배우고 익혀야 한다.
 
 ### platform 
@@ -339,4 +339,29 @@ $('.region').css('color', 'blue');
 
 $('ol > li').css('color', 'red')
 // ==> <ol> tag에 속해 있는 tag 중 <li>라는 자식 tag들 불러와서 실행
+
+$('ol > *')  
+// ==> ol태그 안에 모든 자식 tag를 다 불러오고 싶을때
+
+$('ol li')  
+// ==>  공백일 때, '후손'을 의미함. 그 밑에 후손들 중에 li 찾아. '>' 이거는 바로 밑에 자식 tag만 찾음
+
+$('ol + li') 
+$('ol + div').css('color', 'red')
+// ==> ol 바로 다음에 나오는 형제 중 li를 찾아라
+
+$('ol ~ span').css('color', 'blue') 
+// '~' 는 ol 뒤에 나오는 모든 형제 중에 찾아라.
 ```
+
+
+
+### 6) 속성 선택자 : 속성을 이용해서 선택
+
+```javascript
+$('input[type]').disabled  
+// [] ==> 속성을 의미함. / input이라는 tag를 찾아서 type속성이 있는 것을 찾을 수 있다.
+// 좀 더 디테일하게 ==> $('input[type=button]')
+// 즉, input tag를 찾는데 속성 중 type이 button인 것을 찾아서 적용
+```
+
