@@ -176,7 +176,7 @@
 
   
 
-### <dailyBoxOfficeSearch_Javascript>
+## <dailyBoxOfficeSearch_Javascript>
 
 > * 사용자가 입력한 날짜를 이용해서 해당 날짜에 대한 boxOffice 순위 가져오기
 >* boxOffice data 가지고 있는 서버쪽에 request 해서 웹 프로그램 호출 ==> 화면 출력
@@ -313,7 +313,7 @@ function my_func(){
 
 
 
-### <삭제 번튼 만들고 적용>
+### <삭제 버튼 만들고 적용>
 
 ```javascript
 $.ajax({
