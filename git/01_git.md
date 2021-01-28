@@ -144,7 +144,7 @@ $ git log --oneline -1
 > **원격 저장소 설정**
 
 ```bash
-$ git remote add origin https://.com/lee-seunghoon/practice.git
+$ git remote add origin https://github.com/lee-seunghoon/practice.git
 # 깃, 원격저장소를(remote) 추가해줘(add) origin이라는 이름으로 URL
 
 $ git push origin master
