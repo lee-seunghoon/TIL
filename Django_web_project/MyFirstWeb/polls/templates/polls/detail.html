@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <h1>{{ selected_question.question_text }}</h1>
+
+    {% if error_message %}
+    <div>{{ error_message }}</div><br>
+    {% endif %}
+
+    <form action="{% url 'polls:vote' selected_question.id %}" method="POST">
+    {# 사용자 지정 양식!<from> / action = 서버url / method 어케 가져올거에요? #}
+    {# 사실은  <form action="http://localhost:8000/polls/{{ selected_question.id }}/vote/" method="POST"> 이 표현과 같다  #}
+
+    {# urls.py에서 가져온 request 즉, url을 의미하고 싶을 때, 'polls:vote' 이렇게 사용 #}
+    {# 정확히 말하자면, view.detail도 함께 포함돼 있음! #}
+    {# polls:vote 안에 변할 수 있는 값으로 ==> question_id를 사용 중 #}
+
+
+
+    {%  csrf_token %}
+    {#  ==> 여러 웹 상에서 보안 문제(cracking, hacking) 막아주는 Django가 제시해주는 보안 코드 #}
+    {#  ==> form tag 쓰면 무조건 이 보안 사용!  #}
+
+        {% for choice in selected_question.choice_set.all %}
+        {# selected_question과 연결된(foreign key로 연결돼 있어) 'choice' table 속에서 연결된 부분만 다(all) 가져와라 #}
+        {# choice == record 객체가 list 형태로 넘어옴  #}
+
+        <input type="radio"
+               name="my_choice"
+               id="kaka{{ forloop.counter }}"
+               value="{{ choice.id }}">
+            {#  forloop.counter ==> for문이 loop 돌때, 그 index값 == counter  #}
+            {#  name이 똑같이 설정돼 있으면, radio 버튼 하나만 선택할 수 있다! #}
+            {#  id ==> <label for="id"> ==> 입력한 id 값을 가진 radio버튼에 label을 달아 줄 수 있다.#}
+
+            {#  submit 버튼을 누르면, name과 value의 쌍이 서버쪽 url로 넘어감 #}
+
+        <label for="kaka{{ forloop.counter }}">{{ choice.choice_text }}</label><br>
+        {#  가져온 choice 의 record 중에서 column명이 'choice_text'인 것을 가져오면 항목을 가져오겠네.  #}
+
+        {% endfor%}
+
+
+
+        <br>
+
+        {# 특수한 기능을 포함하고 있는 버튼! #}
+        <input type="submit" value="투표">
+        {#  이 버튼 클릭했을 때, 서버쪽으로 request 보내는 방법  ==> <form {% url 여기에 서버쪽 url 지정해줘 %}#}
+    </form>
+
+</body>
+</html>
