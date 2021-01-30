@@ -440,6 +440,51 @@ def vote(request, question_id):
     	return render(request, 'polls/index.html', context)    
 ```
 
+* detail.html에 error 날 경우 출력할 내용 if로 지정해주자.
+* `detail.html`
+
+```python
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <h1>{{ selected_question.question_text }}</h1>
+    
+    {% if error_message %}
+    <div> {{ error_message }} </div><br>
+    {% endif %}
+
+    <form action="{% url 'polls:vote' selected_question.id %}" method="POST">
+    
+    {%  csrf_token %}
+    
+        {% for choice in selected_question.choice_set.all %}
+        
+        <input type="radio"
+               name="my_choice"
+               id="kaka{{ forloop.counter }}"
+               value="{{ choice.id }}">            
+               {#  submit 버튼을 누르면, name과 value의 쌍이 서버쪽 url로 넘어감 #}
+
+        <label for="kaka{{ forloop.counter }}">{{ choice.choice_text }}</label><br>
+        {% endfor%}
+
+        <br>
+
+        {# 특수한 기능을 포함하고 있는 버튼! #}
+        <input type="submit" value="투표">
+        {#  이 버튼 클릭했을 때, 서버쪽으로 request 보내는 방법  ==> <form {% url 여기에 서버쪽 url 지정해줘 %}#}
+    </form>
+
+</body>
+</html>
+```
+
+
+
 
 
 > ste2. 위 처럼 첫화면을 출력하는 것이 아니라 또 request를 부여해서 결과 화면 나오도록!
@@ -592,6 +637,7 @@ def results(request, question_id):
 </head>
 <body>
 	<h1>{{ question.question_text }}</h1>
+    
     <ul>
     	{% for choice in question.choice_set.all %}
         	<li>{{ choice.choice_text }} - {{ choice.votes }}</li>

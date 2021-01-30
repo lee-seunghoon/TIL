@@ -284,7 +284,7 @@ let tmp = function() {}
 
 
 
-### <css의 치명적인 담점>
+### <css의 치명적인 단점>
 
 ```javascript
 function my_func() {
