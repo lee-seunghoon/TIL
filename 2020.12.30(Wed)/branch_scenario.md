@@ -44,9 +44,7 @@
    Switched to branch 'master'
    (master) $
    ```
-```
-   
-   
+
 
 
 4. master에 병합
@@ -60,14 +58,12 @@
    # MASTER에 변경사항 없어서 그냥 앞으로 
    # 변경사항 없다는 말은 'feature/test'branch에서 작업 후 마스터로 돌아온 후 작업X
    Fast-forward
-    test.txt | 0
-    1 file changed, 0 insertions(+), 0 deletions(-)
-    create mode 100644 test.txt
-```
+   test.txt | 0
+   1 file changed, 0 insertions(+), 0 deletions(-)
+   create mode 100644 test.txt
+   ```
 
-   
 
-   
 
 
 5. 결과 -> fast-foward (단순히 HEAD를 이동)
@@ -359,10 +355,10 @@
    * vim 편집기 화면이 나타납니다.
      
    * 자동으로 작성된 커밋 메시지를 확인하고, `esc`를 누른 후 `:wq`를 입력하여 저장 및 종료를 합니다.
-      
+     
       - `w` : write
    - `q` : quit 
-      
+     
    * 커밋이  확인 해봅시다.
 
       

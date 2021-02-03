@@ -252,8 +252,7 @@ displ(배기량)이 4 이하인 자동차와 5 이상인 자동차 중 어떤 �
                   manufacturer_hwy.append(new)
       
       for i in range(5):
-          print('{} 모델 : {}, 연비 : {}'\
-                       .format(manufacturer,manufacturer_hwy[i][0], manufacturer_hwy[i][1]))
+          print('{} 모델 : {}, 연비 : {}'.format(manufacturer,manufacturer_hwy[i][0], manufacturer_hwy[i][1]))
       
       hwy.clear()
       model_hwy.clear()
@@ -306,7 +305,8 @@ mpg 데이터는 연비를 나타내는 변수가 2개입니다.
    
   
   
-  def car_names():     # 전체 자동차 브랜드 구하기
+  def car_names():     
+  # 전체 자동차 브랜드 구하기
       data = open('mpg.txt', 'r')
       data.readline()
       car_name = []
@@ -324,7 +324,8 @@ mpg 데이터는 연비를 나타내는 변수가 2개입니다.
       return car_name
    
       
-  def suv_mean(car_list1):     # 전체 제조사 중 SUV의 hwy,cty평균의 평균연비 구하기
+  def suv_mean(car_list1):     
+  # 전체 제조사 중 SUV의 hwy,cty평균의 평균연비 구하기
       data = open('mpg.txt', 'r')
       data.readline()
       
@@ -338,7 +339,8 @@ mpg 데이터는 연비를 나타내는 변수가 2개입니다.
               y_mean = car.y_mean()
               y_list.append((car.manufacturer,y_mean))
       
-      sum_list = []        # 평균연비들의 평균 구하기
+      sum_list = []        
+      # 평균연비들의 평균 구하기
       for i in car_list1 :
           y_sum = 0
           y_len = 0
@@ -352,7 +354,8 @@ mpg 데이터는 연비를 나타내는 변수가 2개입니다.
           except Exception as err :
               sum_list.append((i, 0))
       
-      only_y = []        # 연비만 따로 떼어내서 내림차순 적용
+      only_y = []        
+      # 연비만 따로 떼어내서 내림차순 적용
       for i in sum_list :
           list(i)
           only_y.append(i[1])        
@@ -360,7 +363,8 @@ mpg 데이터는 연비를 나타내는 변수가 2개입니다.
       set(only_y)
       list(only_y)
       
-      result_list = []   # 내림차순 적용 후 연비에 맞는 제조사 묶기
+      result_list = []   
+      # 내림차순 적용 후 연비에 맞는 제조사 묶기
       for i in only_y :
           for j in sum_list :
               list(j)
@@ -403,7 +407,8 @@ class별 cty 평균을 구하고 cty 평균이 높은 순으로 정렬해 출력
           self.data.readline()
           self.all_data = []
           
-      def load(self):  # ==> 전체 data에서 각 1줄을 split해서 list 형식으로 담는 함수 
+      def load(self):  
+      # ==> 전체 data에서 각 1줄을 split해서 list 형식으로 담는 함수 
           for i in self.data.readlines():
               i=i.split(',')
               self.all_data.append(i)
@@ -417,7 +422,8 @@ class별 cty 평균을 구하고 cty 평균이 높은 순으로 정렬해 출력
           super().__init__(file_name, load_type)
       
           
-      def all_brand(self):  # ==> 전체 manufacturer 알고 싶을 때 사용하는 함수
+      def all_brand(self):  
+      # ==> 전체 manufacturer 알고 싶을 때 사용하는 함수
           super().load()
           self.brand = []
           for i in self.all_data:
@@ -427,7 +433,8 @@ class별 cty 평균을 구하고 cty 평균이 높은 순으로 정렬해 출력
           return self.brand
       
       
-      def all_class(self): # ==> 전체 class_type 알고 싶을 때 사용하는 함수
+      def all_class(self): 
+      # ==> 전체 class_type 알고 싶을 때 사용하는 함수
           super().load()
           self.class_all = []
           for i in self.all_data:
@@ -437,7 +444,8 @@ class별 cty 평균을 구하고 cty 평균이 높은 순으로 정렬해 출력
           return self.class_all
       
       
-      def class_cty_mean(self): # ==> class별 cty 평균 구할 때 사용하는 함수
+      def class_cty_mean(self): 
+      # ==> class별 cty 평균 구할 때 사용하는 함수
           super().load()
           self.cty_mean = []
           for i in self.all_class():
@@ -450,7 +458,8 @@ class별 cty 평균을 구하고 cty 평균이 높은 순으로 정렬해 출력
           return self.cty_mean
       
       
-      def brand_compact_count(self): # ==> 전체 manufacturer 별 compact 수 알고 싶을 때 사용하는 함수
+      def brand_compact_count(self): 
+      # ==> 전체 manufacturer 별 compact 수 알고 싶을 때 사용하는 함수
           super().load()
           self.count = []
           for i in self.all_brand():
@@ -462,7 +471,8 @@ class별 cty 평균을 구하고 cty 평균이 높은 순으로 정렬해 출력
           return self.count
       
       
-      def value_ascending(self,data):# ==> [[data,num]] 형식에서 num 내림차순으로 정렬할 때 사용하는 함수
+      def value_ascending(self,data):
+      # ==> [[data,num]] 형식에서 num 내림차순으로 정렬할 때 사용하는 함수
           self.num = []
           for i in data:
               self.num.append(i[1])
@@ -505,7 +515,7 @@ hwy(고속도로 연비) 평균이 가장 높은 회사 세 곳을 출력하세�
   ```python
   class Car():
       def __init__(self, car_data):
-        self.manufacturer = car_data[0]
+          self.manufacturer = car_data[0]
           self.model = car_data[1]
           self.displ = float(car_data[2])
           self.year = int(car_data[3])
@@ -532,7 +542,8 @@ hwy(고속도로 연비) 평균이 가장 높은 회사 세 곳을 출력하세�
    
   
   
-  def car_names():     # 전체 자동차 브랜드 구하기
+  def car_names():     
+  # 전체 자동차 브랜드 구하기
       data = open('mpg.txt', 'r')
       data.readline()
       car_name = []
@@ -549,7 +560,8 @@ hwy(고속도로 연비) 평균이 가장 높은 회사 세 곳을 출력하세�
       data.close()
       return car_name
   
-  def carhwy(manufacturer):     # 제조사별 고속도로 연비 평균 구하는 함수
+  def carhwy(manufacturer):     
+  # 제조사별 고속도로 연비 평균 구하는 함수
       data = open('mpg.txt', 'r')
       data.readline()
       all_hwy = []
@@ -566,7 +578,8 @@ hwy(고속도로 연비) 평균이 가장 높은 회사 세 곳을 출력하세�
       data.close()
       return round(hwy_mean,2)
   
-  def car_name_hwy(car_names) :    # ==> 자동차별 hwy 평균 구하는 함수
+  def car_name_hwy(car_names) :    
+  # ==> 자동차별 hwy 평균 구하는 함수
       car_name = car_names
       car_name_hwy = []
       for i in car_name:
