@@ -46,8 +46,6 @@ Found 1000 images belonging to 2 classes.
 '''
 ```
 
-![image-20210408183309516](md-images/image-20210408183309516.png)
-
 
 
 ### `CNN Model 구성`
