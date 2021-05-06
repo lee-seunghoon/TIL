@@ -1,6 +1,6 @@
 # Status
 
-![git](md-images/git.jpg)
+![git](../2020.12.30(Wed)/md-images/git.jpg)
 
 
 
