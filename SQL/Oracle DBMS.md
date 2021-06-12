@@ -75,3 +75,53 @@ INSERT INTO topic
 commit;
 ```
 
+
+
+### 데이터 행 읽기
+
+```sql
+# 모든 컬럼과 모든 행을 가져 오기
+SELECT * FROM topic;
+
+# 특정 컬럼만 불러오기
+SELECT id, title, created FROM topic;
+
+# id가 1번인 행만을 보고 싶다
+SELECT * FROM topic WHERE id = 1;
+
+# id가 1이상인 특정 컬럼만 가져오기
+SELECT id, created FROM topic WHERE id > 1;
+```
+
+
+
+### 데이터 정렬하기
+
+```sql
+# id를 기준으로 내림차순 정렬
+SELECT * FROM topic ORDER BY id DESC;
+
+# id를 기준으로 오름차순 정렬
+SELECT * FROM topic ORDER BY id ASC;
+
+# title 기준으로 오름차순 정렬
+SELECT * FROM topic ORDER BY title ASC;
+```
+
+
+
+### 페이지 기법
+
+```sql
+# 1번째 행부터 데이터 가져오기 (0번째 제외)
+SELECT * FROM topic OFFSET 1 ROWS;
+
+# 2번째 행부터 데이터 가져오기 (0~1번째 제외)
+SELECT * FROM topic OFFSET 2 ROWS;
+
+# FETCH == 몇개 가져올 것인가
+SELECT * FROM topic
+		OFFSET 0 ROWS
+		FETCH NEXT 2 ROWS ONLY;
+```
+
