@@ -125,3 +125,32 @@ SELECT * FROM topic
 		FETCH NEXT 2 ROWS ONLY;
 ```
 
+
+
+### 데이터 수정
+
+> - update와 delete 할 때 where라는 조건문이 없으면 심각하게 고민해봐야 함!
+
+```sql
+UPDATE topic
+		SET
+			title = 'MSSQL',
+			description = 'MSSQL is ...'
+		WHERE 
+			id = 3;
+			
+commit;
+```
+
+
+
+### 데이터 행 삭제
+
+```sql
+DELETE FROM topic WHERE id =3;
+
+commit;
+```
+
+
+
