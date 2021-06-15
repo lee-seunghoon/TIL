@@ -154,3 +154,51 @@ commit;
 
 
 
+### 테이블 삭제
+
+```sql
+DROP TABLE topic;
+```
+
+
+
+### Primary Key
+
+> - 고유 식별자 설정
+> - 기본키 설정돼 있는 컬럼을 조건으로 데이터 가져오는 것과 그렇지 않은 것의 속도 차이는 어마어마하다
+> - 경제성 측면에서 primary key 사용 추천!
+
+```sql
+# table 생성할 때
+# CONSTRAINT(제약 걸어준다) + 프라이머리 키 이름 + PRIMARY KRY(기본키 설정할 컬럼명)
+CREATE TABLE posting (
+		id NUMBER NOT NULL,
+    	title VARCHAR2(50) NOT NULL,
+    	description VARCHAR2(2000) NOT NULL,
+    	created DATE NOT NULL,
+    	CONSTRAINT PK_POSTING PRIMARY KRY(id)
+)
+```
+
+
+
+### Sequence
+
+> - 기본키를 자동으로 다음 숫자로 배정
+
+```sql
+# 시퀀스 만들기
+CREATE SEQUENCE SEQ_POSTING;
+
+# 데이터 추가 ( ==> id가 기본키라서 자동으로 다음 숫자를 부여해줘)
+INSERT INTO topic
+	(id, title, description, created)
+	VALUES
+	(SEQ_POSTING.NEXTVAL, 'Oracle', 'Oracle is not easy', SYSDATE);
+	
+commit;
+
+# 현재 시퀀스 숫자 알고 싶을 때는
+SELECT SEQ_POSTING.CURRVAL FROM topic (or DUAL)
+```
+
