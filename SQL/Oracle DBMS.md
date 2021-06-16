@@ -202,3 +202,16 @@ commit;
 SELECT SEQ_POSTING.CURRVAL FROM topic (or DUAL)
 ```
 
+
+
+
+
+### 서버와 클라이언트
+
+> - HOST : 인터넷에 연결 돼 있는 컴퓨터를 부르는 호칭
+> - CLIENT : 정보를 요청한다
+> - SERVER : 정보를 응답한다. 서비스를 제공하는 자
+> - 다양한 오라클 데이터베이스 클라이언트  - TOAD, SQL Developer, sqlplus
+
+![image-20210616095550747](md-images/image-20210616095550747.png)
+
