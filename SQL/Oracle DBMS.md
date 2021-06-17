@@ -215,3 +215,28 @@ SELECT SEQ_POSTING.CURRVAL FROM topic (or DUAL)
 
 ![image-20210616095550747](md-images/image-20210616095550747.png)
 
+
+
+### 테이블 분해하기
+
+> - 내용이 중복되는 값들을 테이블 분해로 수정하는 게 편해질 수 있다.
+> - 거대한 표를 성격에 따라 쪼개서 연동시킬 수 있다.
+> - 이게 관계형 데이터베이스의 특징
+
+![image-20210617095424247](md-images/image-20210617095424247.png)
+
+
+
+### 테이블 조립하기 (JOIN)
+
+> - 테이블을 분해해서 많은 문제를 해결 했지만 보기가 불편하다
+> - 그럼 조회할 때 분리돼 있는 정보들을 합쳐서 볼 수 있으면 좋겠다
+
+```sql
+SELECT * FROM topic LEFT JOIN author ON topic.author_id = author.id;
+# 전체 칼럼은 topic 테이블에서 가져와
+# 그러데 가져올 왼쪽 테이블을 기준(LEFT)으로 옆에 JOIN해서 가져 왔으면 좋겠어
+# 어떤 기준이냐면(ON) topic 테이블의 author_id 값이랑 autho 테이블의 id 값이 같은 행을 붙여줘
+```
+
+![image-20210617095807888](md-images/image-20210617095807888.png)
