@@ -240,3 +240,33 @@ SELECT * FROM topic LEFT JOIN author ON topic.author_id = author.id;
 ```
 
 ![image-20210617095807888](md-images/image-20210617095807888.png)
+
+
+
+### 분해 실습
+
+```sql
+CREATE TABLE author (
+	id NUMBER NOT NULL,
+    name VARCHAR2(20) NOT NULL,
+    profile VARCHAR2(50),
+    CONSTRAINT PK_AUTHOR PRIMARY KEY(id)
+);
+
+CREATE SEQUENCE SEQ_AUTHOR;
+
+INSERT INTO author (id, name, profile) VALUES (SEQ_AUTHOR.nextval, 'egoing', 'developer')
+INSERT INTO author (id, name, profile) VALUES (SEQ_AUTHOR.nextval, 'sherlocky', 'detector')
+INSERT INTO author (id, name, profile) VALUES (SEQ_AUTHOR.nextval, 'euni', 'wife')
+
+# 새로운 컬럼(필드) 추가
+ALTER TABLE topic ADD (AUTHOR_ID NUMBER);
+
+# topic table 값 수정하기
+UPDATE topic SET AUTHOR_ID = 1 WHERE id=1;
+UPDATE topic SET AUTHOR_ID = 1 WHERE id=2;
+UPDATE topic SET AUTHOR_ID = 2 WHERE id=3;
+```
+
+
+
