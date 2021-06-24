@@ -270,3 +270,19 @@ UPDATE topic SET AUTHOR_ID = 2 WHERE id=3;
 
 
 
+### Join문
+
+> - foreign key : 다른 테이블의 기본키를 가지고 있는 컬럼
+
+```sql
+# 칼럼의 이름을 변동할 수 있다. topic 테이블의 id 칼럼명을 TOPIC_ID로 바꿈
+SELECT T.id TOPIC_ID, 
+	   title, 
+	   name 
+FROM topic T  # ==> 또한 테이블에도 별명을 붙여줄수 있고, T라고 붙여줬으면, topic 대신에 T를 써서 쿼리문 작성할 수 있다.
+	LEFT JOIN author A 
+	ON T.author_id = A.id
+```
+
+![image-20210624093536162](md-images/image-20210624093536162.png)
+
