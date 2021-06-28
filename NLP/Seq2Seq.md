@@ -218,7 +218,7 @@ UNK_INDEX = 3
 MARKER =[PAD, STD, END, UNK]
 CHANGE_FILTER =re.compile(FILTERS)
 
-MAX_SEQUENCE =35  # 우리 모델에서 사용할 문장 최대 길이
+MAX_SEQUENCE =20  # 우리 모델에서 사용할 문장 최대 길이
 ```
 
 
@@ -485,7 +485,7 @@ prepro_configs = json.load(open(DATA_IN_PATH + DATA_CONFIGS, 'r'))
 # 모델 구성에 필요한 파라미터
 MODEL_NAME = 'seq2seq_kor'
 BATCH_SIZE = 2
-MAX_SEQUENCE = 25
+MAX_SEQUENCE = 20
 EPOCHS = 30
 UNITS = 1024            # ==> 재귀신경망의 결과 차원 
 EMBEDDING_DIM = 256     # ==> 임베딩 차원
