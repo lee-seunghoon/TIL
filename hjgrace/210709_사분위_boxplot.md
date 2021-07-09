@@ -19,6 +19,31 @@ lsv20 = pd.read_excel(lsv_path, sheet_name=0)
 
 
 
+### 연도별 사분위 데이터프레임 구하는 함수
+
+```python
+def lsv_boxplot(lsv_mean, year):
+    lsv_df = pd.DataFrame()
+    iqr = np.percentile(lsv_mean['mean'],75) - np.percentile(lsv_mean['mean'],25)
+    q1 = np.percentile(lsv_mean['mean'],25)
+    q2 = np.percentile(lsv_mean['mean'],50)
+    q3 = np.percentile(lsv_mean['mean'],75)
+
+    lsv_df['최대'] = [max(lsv_mean['mean'])]
+    lsv_df['최소'] = [min(lsv_mean['mean'])]
+    lsv_df['최저한계치'] = [q1-(1.5*iqr)]
+    lsv_df['제1사분위'] = [q1]
+    lsv_df['제2사분위'] = [q2]
+    lsv_df['제3사분위'] = [q3]
+    lsv_df.index = ['{}년도 구성원 LSV'.format(year)]
+    
+    return lsv_df
+```
+
+
+
+
+
 ### 사번을 기준으로 평가 점수 평균
 
 ```python
@@ -55,28 +80,40 @@ new_lsv_20
 
 
 
-### 사분위 DataFrame 만들기
+### 각 연도별 사분위 DataFrame 만들기
 
 ```python
-# 18년도 예시
-lsv18_df = pd.DataFrame()
-lsv18_df['최대'] = [max(new_lsv_18['mean'])]
-lsv18_df['최소'] = [min(new_lsv_18['mean'])]
-lsv18_df['제1분위'] = [np.percentile(new_lsv_18['mean'],25)]
-lsv18_df['제2분위'] = [np.percentile(new_lsv_18['mean'],50)]
-lsv18_df['제3분위'] = [np.percentile(new_lsv_18['mean'],75)]
-lsv18_df.index = ['2018년도 구성원 LSV']
-lsv18_df
+# 2018년도
+lsv_boxplot(new_lsv_18, 2018)
+
+# 2019년도
+lsv_boxplot(new_lsv_19, 2019)
+
+# 2020년도
+lsv_boxplot(new_lsv_20, 2020)
 ```
 
 
 
-### Boxplot 구현
+### 각 연도별 Boxplot 구현
 
 ```python
+# 2018년도
 plt.figure(figsize=(3,9))
 plt.boxplot([new_lsv_18['mean']],
             labels=['18LSV'])
+plt.show()
+
+# 2019년도
+plt.figure(figsize=(3,9))
+plt.boxplot([new_lsv_19['mean']],
+            labels=['19LSV'])
+plt.show()
+
+# 2020년도
+plt.figure(figsize=(3,9))
+plt.boxplot([new_lsv_20['mean']],
+            labels=['20LSV'])
 plt.show()
 ```
 
