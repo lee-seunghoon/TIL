@@ -4,18 +4,46 @@
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+import datetime
 ```
 
 
 
-### 경로 설정
+### 경로 설정 및 객체 정의
 
 ```python
+# 전체 평균 데이터
 lsv_path = './210708_(18-20).xlsx'
 lsv18 = pd.read_excel(lsv_path, sheet_name=2)
 lsv19 = pd.read_excel(lsv_path, sheet_name=1)
 lsv20 = pd.read_excel(lsv_path, sheet_name=0)
+
+# 항목별 평균 데이터
+lsv_qgroup_path = './210708_(18-20).xlsx'
+lsv18_group = pd.read_excel(lsv_qgroup_path, sheet_name=5)
+lsv19_group = pd.read_excel(lsv_qgroup_path, sheet_name=4)
+lsv20_group = pd.read_excel(lsv_qgroup_path, sheet_name=3)
 ```
+
+
+
+### 사번별 LSV 평균 값들의 총 평균을 구해 데이터프레임 출력 함수
+
+```python
+def lsv_groupby(lsv,year):
+    now = datetime.datetime.now()
+    lsv_G = lsv.groupby(lsv['num'])
+    lsv_G_mean = lsv_G.mean()
+    new_lsv = pd.DataFrame({
+        'num':lsv_G_mean.index.values,
+        'mean':lsv_G_mean.values.ravel()
+    })
+    new_lsv.to_excel('{}_LSV{}.xlsx'.format(now.strftime('%Y%m%d')[2:], str(year)[2:]), 
+                     index=False)
+    return new_lsv
+```
+
+
 
 
 
