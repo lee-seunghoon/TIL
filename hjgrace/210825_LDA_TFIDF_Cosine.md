@@ -87,3 +87,31 @@ def topic_divide(new_df, vectorizer):
     return topic1_word, topic1_lda, topic2_word, topic2_lda, topic3_word, topic3_lda, topic4_word, topic4_lda
 ```
 
+
+
+## Tfidf & 코사인유사도
+
+```python
+def tfidf_cosine(topic_word, total_text, raw_df):
+    total_word = ' '.join(topic_word[:-11:-1])
+    tfidf = TfidfVectorizer(max_features=500, min_df=100, stop_words=stop_words)
+    new_text = pd.Series(total_word)
+    all_docs = total_text.append(new_text)
+    tfidf_matrix = tfidf.fit_transform(all_docs)
+    cosine_sim = linear_kernel(tfidf_matrix, tfidf_matrix)
+    
+    cosin_num = []
+    select_text = []
+    for i in np.arange(-1,-7,-1):
+        num = cosine_sim[-1][cosine_sim[-1][:-1].argsort()[i]]
+        text = raw_df.iloc[cosine_sim[-1][:-1].argsort()[i]]
+        cosin_num.append(num)
+        select_text.append(text)
+
+    new_df = pd.DataFrame({
+        '대표 문장' :  select_text,
+        '코사인 유사도': cosin_num
+    })
+    return  new_df
+```
+
