@@ -38,9 +38,9 @@ plt.rcParams['figure.figsize'] = (16,18)
 #### LDA 함수
 
 ```python
-def topic_divide(new_df, vectorizer):
+def topic_divide(new_df, vectorizer, lda):
     feature_vec = vectorizer.fit_transform(new_df)
-    lda =  LatentDirichletAllocation(n_components=4, random_state=0).fit(feature_vec)
+    lda =  lda.fit(feature_vec)
     feature_names = vectorizer.get_feature_names()
     
     for idx, topic in enumerate(lda.components_):
@@ -89,7 +89,7 @@ def topic_divide(new_df, vectorizer):
 
 
 
-## Tfidf & 코사인유사도
+#### Tfidf & 코사인유사도
 
 ```python
 def tfidf_cosine(topic_word, total_text, raw_df):
@@ -113,5 +113,21 @@ def tfidf_cosine(topic_word, total_text, raw_df):
         '코사인 유사도': cosin_num
     })
     return  new_df
+```
+
+
+
+## LDA 생성
+
+```python
+# 토픽 수 : 4개
+# 기본 학습 방법('online') 대신 조금 느리지만 성능이 더 좋은 'batch' 사용
+# 모델 성능을 위해 max_iter 증가 (기본값==10)
+# 참고로 max_iter는 최대 반복수라고 생각하면 됨. 중간에 알고리즘으로 값이 수렴할 경우 멈춤
+lda = LatentDirichletAllocation(
+    n_components = 4, 
+    learning_method = 'batch',
+    max_iter= 30
+)
 ```
 
