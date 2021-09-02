@@ -117,6 +117,42 @@ def tfidf_cosine(topic_word, total_text, raw_df):
 
 
 
+#### Tfidf 사용자 정의 함수
+
+```python
+def tfidf_data(text_data, tfidf):
+    _tokeniz = text_data.map(tokenize)
+    
+#     _word = []
+#     for sentence in [text for text in _tokeniz.values]:
+#         for word in sentence.split(' '):
+#             if word not in stop_word:
+#                 _word.append(word)
+                
+    _total_word = []
+    for sentence in _tokenize.values:
+        _total_word.append(sentence)
+
+    _tfidf_matrix = tfidf.transform(_total_word)
+    
+    # 단어사전 정렬
+    word_dict = sorted(tfidf.vocabulary_.items())
+    idx2word = {idx:word for word, idx in word_dict}
+    
+    _tfidf_word = []
+    _tfidf = []
+    for i in range(25,0,-1):
+        # argsort 개념이 중요하고 오름차순으로 바꾸고 싶을 때 방법 숙지 필요
+        _tfidf_word.append(idx2word[(-_tfidf_matrix.toarray()[0]).argsort()[i-1]])
+        _tfidf.append(_tfidf_matrix.toarray()[0][(-_tfidf_matrix.toarray()[0]).argsort()[i-1]])
+
+    return _tfidf_word, _tfidf
+```
+
+
+
+
+
 ## LDA 생성
 
 ```python
