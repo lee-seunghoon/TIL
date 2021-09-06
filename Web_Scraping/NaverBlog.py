@@ -12,8 +12,8 @@ import urllib.parse
 from bs4 import BeautifulSoup
 
 # Naver API 애플케이션 인가 정보
-naver_client_id = 'naver_application_id'
-naver_client_secret = 'naver_application_pw'
+naver_client_id = 'cGLyzyPcu9B2t_Oj0DhX'
+naver_client_secret = 'PKxpmEmFe4'
 
 
 def get_blog_count(query, display):
@@ -73,6 +73,80 @@ def get_blog_count(query, display):
 
     return blog_count
 
+# 전체 블로그 포스팅 글을 긁어오는 함수
+def get_blog_post(query, display, start_idx, sort):
+    # 전역 변수 세팅
+    global no, fs
+
+    encode_query = urllib.parse.quote(query)
+
+    # 추가 적으로 display, start, sort 변수를 입력한다.
+    search_url = 'https://openapi.naver.com/v1/search/blog?query=' + encode_query \
+                 + '&display=' + str(display) + '&start=' + str(start_idx) + '&sort=' + str(sort) 
+    request = urllib.request.Request(search_url)
+
+    request.add_header('X-Naver-Client-Id', naver_client_id)
+    request.add_header('X-Naver-Client-Secret', naver_client_secret)
+
+    response = urllib.request.urlopen(request)
+    response_code = response.getcode()
+
+    if response_code is 200 :
+        response_body = response.read()
+        response_body_dict = json.loads(response_body.decode('utf-8'))
+        for item_idx in range(0, len(response_body_dict['items'])):
+            try:
+                remove_html_tag = re.compile('<.*?>')  # html tag가 들어가 있어서 특수기호 지운다
+                title = re.sub(remove_html_tag, '', response_body_dict['items'][item_idx]['title'])
+                # 링크를 가져오는데, 쓸모 없는 amp; 이런 게 포함 돼 있는 경우도 있어서 지운다.
+                link = response_body_dict['items'][item_idx]['title'].replace('amp;', '')
+                # description도 쓸모없는 특수기호 지운다
+                description = re.sub(remove_html_tag, '', response_body_dict['items'][item_idx]['description'])
+                # 블로거 이름
+                blogger_name = response_body_dict['items'][item_idx]['bloggername']
+                # 블로거 링크 == 호스트 주소가 아니라, 블로그의 주소
+                blogger_link = response_body_dict['items'][item_idx]['bloggerlink']
+                # 포스팅 날짜
+                post_date = response_body_dict['items'][item_idx]['postdate']
+
+                no += 1
+                print('-'*20)
+                print('#' + str(no))
+                print('Title :', title)
+                print('Link :', link)
+                print('Description :', description)
+                print('Blogger Name :', blogger_name)
+                print('Blogger link :', blogger_link)
+                print('Blog Date :', post_date)
+
+                # 위에서 가져온 link를 활용해서 웹스크래핑 하기 위해 bs4 객체 생성
+                post_code = requests.get(link)
+                post_text = post_code.text
+                post_soup = BeautifulSoup(post_text, 'lxml')
+
+                # 하지만 네이버 블로그는 드래그, 우클릭 복사를 막기 위해 설정이 하나 더 걸려 있다.
+                # iframe 이란 element로 접근해서 진짜 블로그 url을 가져와야 한다.
+                for mainFrame in post_soup.select('iframe#mainFrame'):
+                    # 진짜 블로그 url
+                    blog_post_url = 'http://blog.naver.com'+ mainFrame.get('src')
+                    blog_post_code = requests.get(blog_post_url)
+                    blog_post_text = blog_post_code.text
+                    blog_post_soup = BeautifulSoup(blog_post_text, 'lxml')
+
+                    # 블로그 내용 중에서 실제 내용만 가져올건데 그 내용은
+                    # div tag에서 postViewArea 라는 tag에 있다.
+                    for blog_post_content in blog_post_soup.select('div#postViewArea'):
+                        blog_post_content_text = blog_post_content.get_text()
+                        blog_post_full_contents = str(blog_post_content_text)
+                        blog_post_full_contents = blog_post_full_contents.replace('\n\n', '\n')
+
+                        # 파일에 내용을 저장하자
+                        fs.write(blog_post_full_contents + '\n')
+                        fs.write('-'*20)
+            except:
+                item_idx += 1
+
+
 
 if __name__ == '__main__':
     no = 0          # 몇개의 포스트를 저장하였는지 세기 위한 index
@@ -87,5 +161,9 @@ if __name__ == '__main__':
                                                       # 새로운 내용을 계속 추가하는 파일 형식
 
     blog_count = get_blog_count(query, display)
+
+    # 블로그 포스팅 가져오자
+    for start_idx in range(start, blog_count + 1, display):
+        get_blog_post(query, display, start_idx, sort)
 
     fs.close()
