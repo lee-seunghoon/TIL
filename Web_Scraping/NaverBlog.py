@@ -12,8 +12,8 @@ import urllib.parse
 from bs4 import BeautifulSoup
 
 # Naver API 애플케이션 인가 정보
-naver_client_id = 'cGLyzyPcu9B2t_Oj0DhX'
-naver_client_secret = 'PKxpmEmFe4'
+naver_client_id = 'naver_client_id'
+naver_client_secret = 'naver_client_secret'
 
 
 def get_blog_count(query, display):
