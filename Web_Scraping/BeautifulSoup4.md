@@ -53,3 +53,64 @@ rank1 = soup.find('li', attrs={'class':'rank01'})
 rank1.a # ==> soup 객체처럼 사용할 수 있다.
 ```
 
+
+
+## 기본2
+
+> - 부모/형제 관계 사용
+
+```python
+# rank1의 a tag의 text 가져오기
+rank1.a.get_text() # ==> 여신강림-173화
+
+# 다음 형제 위치에 있는 element 값 가져오기
+print(rank1.next_sibling) # ==> 아무것도 안뜬다.
+print(rank1.next_sibling.next_sibling) # ==> 하나 더 주면 다음 element 정보를 가져온다.
+									   # ==> element 사이에 개행 정보라고 해서 중간에 공백이 있을 수 있다.
+    
+rank2 = rank1.next_sibling.next_sibling
+rank3 = rank2.next_sibling.next_sibling
+print(rank3.a.get_text()) # ==> 사신소년-113화 분열
+
+# 이전 형제 위치에 있는 element 가져오기
+rank2 = rank3.previous_sibling.previous_sibling
+
+# 부모 elemet 가져오기
+rank_parent = rank1.parent
+print(rank_parent) # rank 정보를 담고 있는 li tag들을 모두 포함해서 ol tag를 출력
+
+# 형제 가져 올 때 개행 부분이 있으면 두번씩 써야하는 게 애매하다
+# 새로운 방법 == 조건을 통해 찾기
+# .find_next_sibling('태그명')
+# 형제 tag 중에 우리가 tag명으로 준 첫번째 tag를 찾는다.
+rank2 = rank1.find_next_sibling('li')
+print(rank2.a.get_text())
+rank3 = rank2.find_next_sibling('li')
+print(rank3.a.get_text())
+
+# 이전 형제를 찾을 때도 똑같이 find로 찾을 수 있다.
+rank2 = rank3.find_previous_sibling('li')
+print(rank2.a.get_text())
+
+# 함께 있는 형제들 모두 가져오기
+rank1.find_next_siblings('li')
+```
+
+
+
+> - 특정 text를 filter로 찾기
+
+```python
+import requests
+from bs4 import BeautifulSoup
+
+url = 'https://comic.naver.com/webtoon/weekday'
+res = requests.get(url)
+res.raise_for_status()
+soup = BeautifulSoup(res.text, 'lxml')
+
+# soup 전체 html elment에서 'a' tag 중 text가 '~~'인 a tag 출력
+webtoon = soup.find('a', text='여신강림-173화')
+print(webtoon) # ==>  <a href= ...> ... </a>
+```
+
