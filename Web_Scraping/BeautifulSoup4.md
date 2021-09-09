@@ -114,3 +114,26 @@ webtoon = soup.find('a', text='여신강림-173화')
 print(webtoon) # ==>  <a href= ...> ... </a>
 ```
 
+
+
+## 활용 1-1 (내가 좋아하는 만화 제목 스크래핑)
+
+```python
+import requests
+from bs4 import BeautifulSoup
+
+url = 'https://comic.naver.com/webtoon/weekday'
+res = requests.get(url)
+res.raise_for_status()
+soup = BeautifulSoup(res.text, 'lxml')
+
+# find_all 조건에 해당하는 모든 엘리먼트를 찾는다.
+# 리스트로 모든 엘리먼트를 반환해준다.
+cartoons = soup.find_all('a', attrs={'class':'title'})
+
+# 전체 a tag에서 text만 다 뽑아보자
+# 그럼 우리가 가져온 웹페이지 soup 문서 안에서 웹툰 제목만 쭉 가져온다.
+# 네이버 웹툰 전체 목록을 가져오게 된다.
+for cartoon in cartoons:
+    print(cartoon.get_text())
+```
