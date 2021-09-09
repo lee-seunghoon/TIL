@@ -137,3 +137,41 @@ cartoons = soup.find_all('a', attrs={'class':'title'})
 for cartoon in cartoons:
     print(cartoon.get_text())
 ```
+
+
+
+> - 윈드브레이커 각 회차 제목 가져오기
+
+```python
+import requests
+from bs4 import BeautifulSoup
+
+url = 'https://comic.naver.com/webtoon/list?titleId=602910&weekday=mon'
+res = requests.get(url)
+res.raise_for_status()
+soup = BeautifulSoup(res.text, 'lxml')
+
+# 이 사이트의 각 회차 제목을 담고 있는 a tag는 class도 없고 td tag 밑에 있다.
+# 그래서 td tag이면서 class가 title인 엘리먼트 가져와보자
+cartoons = soup.find_all('td', attrs={'class': 'title'})
+
+# 제일 위에 있는 만화 제목 가져오기
+# 3부 - 128화 [마지막화] 날아라 고자현!
+cartoon1_title = cartoons[0].a.get_text()
+print(cartoon1_title)
+
+# 이 제목의 링크도 가져와보자
+# a tag의 속성 중 href
+cartoon1_link = cartoons[0].a['href']
+print(cartoon1_link) # ==> /webtoon/detail?titleId=602910&no=378&weekday=mon
+					 # ==> 온전하지 않은 링크를 가져온다.
+print('https://comic.naver.com' + cartoon1_link) # 잘 가져와준다.
+
+# 이제 전체 다 가져와보자
+for cartoon in cartoons:
+    title = cartoon.a.get_text()
+    link = 'https://comic.naver.com' + cartoon.a['href']
+    print(title, link)
+    
+```
+
