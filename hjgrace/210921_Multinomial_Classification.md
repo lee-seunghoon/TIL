@@ -36,3 +36,25 @@ logit_model = LogisticRegression(C=1,
                                  solver='lbfgs')
 ```
 
+
+
+## Multi-Nomial Logistic 통계분석 (MNLogit)
+
+> - statsmodels.api.MNLogit()
+
+```python
+# 라이브러리
+import statsmodels.api as sm
+
+# 독립변수 x / 종속변수 y 라고 가정
+# 종속변수가 다항분류인 데이터의 상관관계를 확인하기 윟새 MNLogit 생성
+logit_model = sm.MNLogit(y, sm.add_constant(x))
+result = logit_model.fit()
+
+# 분석 결과 보고서 확인
+result.summary()
+
+# 또다른 형태의 2차보고서(?) 확인
+result.summary2()
+```
+
