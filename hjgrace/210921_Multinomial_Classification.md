@@ -58,3 +58,34 @@ result.summary()
 result.summary2()
 ```
 
+
+
+## DNN
+
+```python
+# 라이브러리
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Dense
+from sklearn.preprocessing import LabelEncoder
+
+# DNN 모델 구성
+model = Sequential()
+model.add(Dense(64, input_dim=128, activation='relu')) # ==> input_dim은 독립변수의 개수(feature의 개수)
+model.add(Dense(64, activation='relu'))
+model.add(Dense(32, activation='relu'))
+model.add(Dense(16, activation='relu'))
+model.add(Dense(6, activation='softmax'))
+
+# 모델 컴파일
+model.compile(loss='categorical_crossentropy',
+              optimizer='adam',
+              metrics=['accuracy'])
+
+# 모델 적합
+model.fit(train_x, train_y, epochs=20, batch_size=64)
+
+# 정확도 점수
+model.evaluate(test_x, text_y)[1]
+
+```
+
