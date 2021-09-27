@@ -7,6 +7,28 @@
 
 
 
+## Multi-Nomial Logistic 통계분석 (MNLogit)
+
+> - statsmodels.api.MNLogit()
+
+```python
+# 라이브러리
+import statsmodels.api as sm
+
+# 독립변수 x / 종속변수 y 라고 가정
+# 종속변수가 다항분류인 데이터의 상관관계를 확인하기 윟새 MNLogit 생성
+logit_model = sm.MNLogit(y, sm.add_constant(x))
+result = logit_model.fit()
+
+# 분석 결과 보고서 확인
+result.summary()
+
+# 또다른 형태의 2차보고서(?) 확인
+result.summary2()
+```
+
+
+
 ## Logistic Regression
 
 > - `multi_class` = 'ovr'
@@ -38,25 +60,33 @@ logit_model = LogisticRegression(C=1,
 
 
 
-## Multi-Nomial Logistic 통계분석 (MNLogit)
+## Decision Tree
 
-> - statsmodels.api.MNLogit()
+> - `max_depth` : 트리의 최대 깊이를 의미하며, default값인 `None`으로 설정되면 클래스 분류를 완변하게 할 때까지 노드를 분할하면서 모델을 구성한다. `과적합(overfitting)`을 방지하기 위해 설정하는 경우가 많다.
+> - `min_samples_split` : 각 노드가 만들어질 때 사용할 데이터 비율을 설정하는 파라미터이고, 0.1 ~ 1 의 단위로 세팅한다.
+> - `min_samples_leaf` : 마지막 노드들을 리프노드라고 하는데, 이 리프노드에서 사용할 최소 데이터 수를 세팅하는 파러미터를 의미한다.
+> - `max_features` : 최적의 모델을 구성하기 위해, feature(독립변수)를 최대 몇개까지 사용할 지 정하는 파라미터다.
 
 ```python
-# 라이브러리
-import statsmodels.api as sm
+from sklearn.tree import DecisionTreeClassifier
 
-# 독립변수 x / 종속변수 y 라고 가정
-# 종속변수가 다항분류인 데이터의 상관관계를 확인하기 윟새 MNLogit 생성
-logit_model = sm.MNLogit(y, sm.add_constant(x))
-result = logit_model.fit()
+clf = DecisionTreeClassifier(
+	max_depth = 20,
+    min_samples_split = 0.5,
+    min_samples_leaf = 0.5,
+    max_features = 50
+)
 
-# 분석 결과 보고서 확인
-result.summary()
+clf.fit(train_x, train_y)
 
-# 또다른 형태의 2차보고서(?) 확인
-result.summary2()
+train_score = clf.score(train_x, train_y)
+test_score = clf.score(train_x, train_y)
+
+print('train accuracy :', train_score)
+print('test accuracy :', test_score)
 ```
+
+
 
 
 
