@@ -88,6 +88,27 @@ print('test accuracy :', test_score)
 
 
 
+## XGboost
+
+```python
+import xgboost as xgb
+
+model = xgb.XGBoostClassifier(
+    n_estimators=200, # 100이 default 값
+	objective='binary:logistic',
+    n_jobs=-1,
+    random_state=0
+)
+model.fit(train_x,
+          train_y,
+          eval_metric = 'error' # 이진분류일 경우 ==> 'error','logloss' 주로 사용
+								# 다중분류일 경우 ==> 'merror','mlogloss' 주로 사용
+          eval_set=[(test_x, test_y)],
+          early_stopping_rounds=50)
+```
+
+
+
 
 
 ## DNN
