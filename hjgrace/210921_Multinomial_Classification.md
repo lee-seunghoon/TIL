@@ -88,7 +88,27 @@ print('test accuracy :', test_score)
 
 
 
-## XGboost
+## XGboost 특징
+
+> - Tree 계열 알고리즘을 활용한 앙상블 학습 모델
+> - 최적의 성능을 보이는 `GradientBoosting`의 느린 속도를 보완하면서 동일한 퍼포먼스를 보여주는 모델 
+> - `오버피팅(과대적합)` 문제를 효율적으로 해결하는 모델 
+> - 모델 내부적으로 보유한 교차검증 시스템을 활용해서 최대 반복횟수 세팅을 통해 `early stop`이 가능함(무한정 학습하지 않음)
+
+
+
+## XGboost 하이퍼파라미터
+
+> - **learning_rate** : 학습률을 의미하면 0~1까지의 숫자 입력 가능  
+> - **n_estimators** : 랜덤포레스트에서 트리 모델 개수를 지정하는 것과 같이, 생성할 weak learner 즉, 약한 학습 분류기의 개수를 세팅하는 파라미터 
+> - **min_child_weight** : 오버피팅을 규제하기 위해 튜닝하며, 관측치에 대한 가중치 합의 최소를 의미, 수가 커질수록 under fitting 가능성 높음, 범위는 0 ~ ∞ 
+> - **max_depth** : 트리 기반의 파라미터와 동일한 의미를 가지며, 0을 지정하면 깊이의 제한이 없고, 너무 크면 오버피팅 문제를 불러오기 때문에 통상 3~ 10정도까지 세팅하는 경우가 많음, 범위는 0 ~ ∞ 
+> - **gamma** : leaf node의 추가 분할을 결정하기 위한 최소손실 감소값을 의미, 값이 클수록 오버피팅 감소효과, 범위는 마찬가지로 0 ~ ∞ 
+> - **objective**     
+>   1) 회귀일 경우 = 'reg:linear'    
+>   2) 이진분류일 경우 = 'binary:logistic'    
+>   3) 다중분류이면서 class를 그대로 return 하고 싶을 경우 = 'multi:softmax'    
+>   4) 다중분류이면서 각 class에 속할 확률을 return 하고 싶을 경우 = 'multi:softprob'
 
 ```python
 import xgboost as xgb
