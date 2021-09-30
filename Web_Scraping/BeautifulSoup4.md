@@ -175,3 +175,32 @@ for cartoon in cartoons:
     
 ```
 
+
+
+> - 윈드브레이커 각 회차 평점 가져오기
+
+```python
+import requests
+from bs4 import BeautifulSoup
+
+# 네이버 웹툰 윈드브레이터 웹사이트
+url = 'https://comic.naver.com/webtoon/list?titleId=602910&weekday=mon'
+
+res = requests.get(url)
+res.raise_for_status()
+soup = BeautifulSoup(res.text, 'lxml')
+
+# 평점 데이터를 가져오기 위해 div 태그에서 class 속성 값이 rating_type인 element를 모두 가져와
+ratings = soup.find_all('div', attrs={'class':'rating_type'})
+
+# 평점의 평균 계산하기
+total_ratings = 0
+for rating in ratings:
+    # div tag 밑에는 strong이라는 tag에 평점 숫자 값이 있다.
+    rating_score = rating.strong.get_text()
+    total_ratings += float(rating_score)
+
+print('전체 평점의 합 :', total_ratings)
+print('평점의 평균은?', total_ratings/len(ratings))
+```
+
