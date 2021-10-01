@@ -234,7 +234,12 @@ import re
 from bs4 import BeautifulSoup
 
 url = 'https://www.coupang.com/np/search?q=%EB%85%B8%ED%8A%B8%EB%B6%81&channel=user&component=&eventCategory=SRP&trcid=&traid=&sorter=scoreDesc&minPrice=&maxPrice=&priceRange=&filterType=&listSize=36&filter=&isPriceRange=false&brand=&offerCondition=&rating=0&page=1&rocketAll=false&searchIndexingToken=&backgroundColor='
-res = requests.get(url)
+
+# 그냥 정보를 요청하니깐 시간이 너무 오래걸리면서 뭔가 거부되는 느낌
+# user agent 정보를 준다
+headers = {'User-Agent' : 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Safari/537.36'}
+
+res = requests.get(url, headers=headers)
 res.raise_for_status()
 soup = BeautifulSoup(res.text, 'lxml')
 
@@ -245,3 +250,31 @@ items = soup.find_all('li', attrs={'class':re.compile('^search-product')})
 # li tag 중 class가 search-product 로 시작하는 모든 엘리먼트를 가져왔는데
 # 그 중 첫번째 element에서 div tag를 찾고 그 중에 class가 name인 제일 첫번째 tag를 찾아서 그 text 값을 반환 
 print(items[0].find('div', attrs={'class':'name'}).get_text())
+# ==> 삼성전자 2021 노트북 플러스2 15.6, 퓨어 화이트, 셀러론, 128GB, 8GB, WIN10 Pro, NT550XDA-K14AW
+```
+
+
+
+## 활용 2-2 쿠팡
+
+> - 제품 정보에 대한 세부 항목들을 가져와본다
+
+```python
+for item in items:
+    # 제품명
+    name = item.find('div', attrs={'class':'name'}).get_text()
+    # 가격
+    price = item.find('strong', attrs={'class':'price-value'}).get_text()
+    # 평점
+    # 평점이 없는 데이터도 있을 수 있어서
+    rating = item.find('em',attrs={'class':'rating'})
+    if rating :
+        rating = rating.get_text()
+    else:
+        rating = '평점 없음'
+    # 평가개수
+    rating_cnt = item.find('span', attrs={'class':'rating-total-count'}).get_text()
+
+    print(name, price, rating, rating_cnt)
+```
+
