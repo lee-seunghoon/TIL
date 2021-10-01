@@ -204,3 +204,44 @@ print('전체 평점의 합 :', total_ratings)
 print('평점의 평균은?', total_ratings/len(ratings))
 ```
 
+
+
+## 활용 2-1 쿠팡
+
+### HTTP Method
+> - 서버 요청 종류중 get, post 방식에 대해 알아보자
+
+#### GET
+> - 누구나 볼 수 있게 url을 적어서 web 정보를 요청하는 방식
+> - 예시) https://www.coupang.com/np/search?minPrice=1000&maxPrice=100000&page=1
+> - 우리가 요청할 url 뒤에 `?` 기호와 함께 `변수=값` 형식으로 정보를 부여하고 각 정보는 `&`으로 연결한다.
+> - 이 값들을 변동하면서 쉽게 접근할 수 있다.
+> - get방식은 데이터를 전송할 때, 큰 데이터를 보내지 못하는 한계가 존재한다.
+
+#### POST
+> - url 아니 HTTP 메세지 바디에 숨겨서 보내는 방식
+> - 보안이 필요한 데이터는 post 방식을 활용한다.
+> - 데이터가 큰 경우도 가능하다
+> - 회원가입과 게시글 쓰는 (개인정보 느낌이 강한) 화면은 post 방식으로 요청한다.
+
+
+
+### 실습
+
+```python
+import requests
+import re
+from bs4 import BeautifulSoup
+
+url = 'https://www.coupang.com/np/search?q=%EB%85%B8%ED%8A%B8%EB%B6%81&channel=user&component=&eventCategory=SRP&trcid=&traid=&sorter=scoreDesc&minPrice=&maxPrice=&priceRange=&filterType=&listSize=36&filter=&isPriceRange=false&brand=&offerCondition=&rating=0&page=1&rocketAll=false&searchIndexingToken=&backgroundColor='
+res = requests.get(url)
+res.raise_for_status()
+soup = BeautifulSoup(res.text, 'lxml')
+
+# 정규식 활용
+# re.compile('^search-product') == search-product 로 시작하는 모든 text를 의미함
+items = soup.find_all('li', attrs={'class':re.compile('^search-product')})
+
+# li tag 중 class가 search-product 로 시작하는 모든 엘리먼트를 가져왔는데
+# 그 중 첫번째 element에서 div tag를 찾고 그 중에 class가 name인 제일 첫번째 tag를 찾아서 그 text 값을 반환 
+print(items[0].find('div', attrs={'class':'name'}).get_text())
