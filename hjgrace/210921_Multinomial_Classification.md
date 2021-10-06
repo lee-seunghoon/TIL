@@ -29,6 +29,33 @@ result.summary2()
 
 
 
+## VIF
+
+> - 10을 초과하면 다중공선성이 있다고 판단한다.
+> - 5를 초과할 경우 다중공선선의 위험이 있다고 판단한다.
+
+```python
+import pandas as pd
+from statsmodels.stats.outliers_influence import variance_inflation_factor
+
+# VIF 값 확인할 독립변수 데이터
+x_data = df.iloc[:,1:] # 예시
+
+# VIF를 표현한 데이터프레임 생성
+vif_df = pd.DataFrame()
+
+# 컬럼명으로 독립변수명을 설정
+vif_df['features'] = x_data.columns
+
+# statsmodels 라이브러리에서 variance_influence_factor 모듈을 활용한다.
+# 독립변수들 간의 관계를 확인하는 게 다중공선성이라서 독립변수만 입력한다.
+vif_df['VIF'] = [variance_influence_factor(x_data.values, i) for i in range(x_data.shape[1])]
+```
+
+
+
+
+
 ## Logistic Regression
 
 > - `multi_class` = 'ovr'
