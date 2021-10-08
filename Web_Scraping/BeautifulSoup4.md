@@ -255,7 +255,7 @@ print(items[0].find('div', attrs={'class':'name'}).get_text())
 
 
 
-## 활용 2-2 쿠팡
+## 활용 2-2 쿠팡 상품 웹 스크래핑
 
 > - 제품 정보에 대한 세부 항목들을 가져와본다
 
@@ -276,5 +276,52 @@ for item in items:
     rating_cnt = item.find('span', attrs={'class':'rating-total-count'}).get_text()
 
     print(name, price, rating, rating_cnt)
+```
+
+
+
+## 활용 2-3 쿠팡 상품 웹 스크래핑
+
+> - 광고 상품은 제외한다.
+> - Apple 맥북 상품도 제외한다.
+> - 평점이 4.5 이상이고, 평가개수가 500개 이상이면서, 평점이 있는 상품만 스크래핑한다.
+
+```python
+for item in items:
+
+    # 광고 상품을 제외하고 나머지 상품만 출력
+    ad_badge = item.find('span', attrs={'class':'ad-badge-text'})
+    if ad_badge:
+        print('광고 상품입니다. 제외하겠습니다')
+        print()
+        continue
+
+    # 제품명
+    name = item.find('div', attrs={'class':'name'}).get_text()
+
+    # Apple 맥북 상품을 안 볼거라서 제외
+    if 'Apple' in name:
+        print('[Apple 맥북 상품은 제외하겠습니다]')
+        print()
+        continue
+
+    # 가격
+    price = item.find('strong', attrs={'class':'price-value'}).get_text()
+    
+    # 평점
+    # 평점이 없는 데이터도 있을 수 있어서
+    rating = item.find('em',attrs={'class':'rating'})
+    if rating :
+        rating = rating.get_text()
+    else:
+        rating = '평점 없음'
+    
+    # 평가개수
+    rating_cnt = item.find('span', attrs={'class':'rating-total-count'}).get_text()
+
+    # 평점이 4.5 이상이고 평가개수가 500개 이상이면서 평점이 있는 것만 출력
+    if (float(rating) >= 4.5) and (int(rating_cnt[1:-1]) >= 500) and (rating != '평점 없음'):
+        print('제품이름:{}\n제품가격:{}원\n평점:{}\n평가개수:{}개'.format(name, price, rating, rating_cnt[1:-1]))
+        print()
 ```
 
