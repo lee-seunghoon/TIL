@@ -118,6 +118,10 @@ Name: department, dtype: int64
 '''
 ```
 
+
+
+## 이상치 확인
+
 ```python
 # 박스플랏으로 이상치 확인
 # satisfaction_level 변수를 제외하고 나머지 독립변수 8개를 한번에 확인하기
@@ -146,6 +150,10 @@ x6.boxplot(df['promotion_last_5years'])
 plt.tight_layout()
 plt.show()
 ```
+
+
+
+## 데이터 전처리
 
 ```python
 # 독립변수 데이터 인코딩
@@ -177,5 +185,19 @@ encoder.fit(df['department'])
 encoding_class = encoder.transform(df['department'])
 encoding_class
 # array([7, 7, 7, ..., 8, 8, 8])
+```
+
+```python
+# 데이터 분리
+
+# 독립변수(설명변수)
+x_data = df.drop('left', axis=1, inplace=False)
+
+# 종속변수(결과변수)
+y_data = df['left']
+
+# train test data 분리
+from sklearn.model_selection import train_test_split
+train_x, test_x, train_y, test_y = train_test_split(x_data, y_data, test_size=0.3, stratify=y_data, random_state=0)
 ```
 
