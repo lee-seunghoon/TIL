@@ -22,7 +22,7 @@
 
     <!-- Tag별로 포스트를 모아주는 -->
     <li class="nav-archive" role="menuitem">
-        <a href="nav-author_achive.html">Tag별 Posts</a>
+        <a href="author_archive.html">Tag별 Posts</a>
     </li>
 </ul>
 
