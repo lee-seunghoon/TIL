@@ -116,6 +116,10 @@ print(webtoon) # ==>  <a href= ...> ... </a>
 
 
 
+---
+
+
+
 ## 활용 1-1 (내가 좋아하는 만화 제목 스크래핑)
 
 ```python
@@ -203,6 +207,10 @@ for rating in ratings:
 print('전체 평점의 합 :', total_ratings)
 print('평점의 평균은?', total_ratings/len(ratings))
 ```
+
+
+
+---
 
 
 
@@ -404,4 +412,48 @@ for page in range(1,6):
             print()
 
 ```
+
+
+
+---
+
+
+
+## 활용 3 다음 영화 이미지 스크래핑
+
+```python
+import requests
+from bs4 import BeautifulSoup
+
+# 2016년부터 2020년까지
+for year in range(2016, 2021):
+	
+    # 스크래핑할 url
+    url = 'https://search.daum.net/search?w=tot&q={}%EB%85%84%EC%98%81%ED%99%94%EC%88%9C%EC%9C%84&DA=MOR&rtmaxcoll=MOR'.format(year)
+    res = requests.get(url)
+    res.raise_for_status()
+    soup = BeautifulSoup(res.text, 'lxml')
+
+    # 이미지를 담고 있는 img 엘리먼트 중 class가 tumb_img인 태그들 모두 찾기
+    imgs = soup.find_all('img', attrs={'class':'thumb_img'})
+
+    # 이미지 url 5개 까지만 가져오기
+    for idx,img in enumerate(imgs):
+        img_url = img['src']
+
+        # 이미지 url로 다시 request 하기
+        img_res = requests.get(img_url)
+        img_res.raise_for_status()
+
+        # 이미지 정보를 담고 requests에서 content라는 객체가 이미지 소스를 가지고 있다 이걸로 이미지 생성해야 한다.
+        # image pixel이라는 binary 정보를 담고 있기에 wb로 입력해줘야 한다. / encoding은 따로 필요없다.
+        with open('movie_{}_{}.jpg'.format(year,idx+1), 'wb') as f :
+            f.write(img_res.content)
+
+        # idx가 4인 5번째까지 작업하고, for문 탈출하기
+        if idx >= 4:
+            break
+```
+
+
 
