@@ -325,3 +325,83 @@ for item in items:
         print()
 ```
 
+
+
+## 활용 2-4 쿠팡 웹 스크래핑
+
+> - 다양한 페이지의 상품 정보를 가져오자
+> - 5페이지 정도로 설정해서 가져오자
+
+```python
+# 라이브러리
+import requests
+import re
+from bs4 import BeautifulSoup
+
+
+# for 문을 이용해 5페이지 설정
+for page in range(1,6):
+    print('*'*20 + f'{page}번째 페이지' + '*'*20)
+
+    # 스크래핑 할 쿠팡 노트북 상품 url
+    url = 'https://www.coupang.com/np/search?q=%EB%85%B8%ED%8A%B8%EB%B6%81&channel=user&component=&eventCategory=SRP&trcid=&traid=&sorter=scoreDesc&minPrice=&maxPrice=&priceRange=&filterType=&listSize=36&filter=&isPriceRange=false&brand=&offerCondition=&rating=0&page={}&rocketAll=false&searchIndexingToken=1=6&backgroundColor='.format(page)
+    
+    # User Agent Setting
+    headers = {'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Safari/537.36'}
+    
+    res = requests.get(url, headers=headers)
+    res.raise_for_status()
+    soup = BeautifulSoup(res.text, 'lxml')
+    
+
+    # 정규식을 통해 내가 원하는 상품 정보 가져오기
+    # class가 search-product 로 시작하는 정보
+    items = soup.find_all('li', attrs={'class':re.compile('^search-product')})
+    
+
+    # 각각의 상품 정보 출력
+    for item in items:
+
+        # 광고 상품 제외
+        ad_badge = item.find('span', attrs={'class':'ad-badge-text'})
+        if ad_badge:
+            continue
+
+        # 제품명이 Apple인 상품 제외
+        name = item.find('div', attrs={'class':'name'}).get_text()
+        if 'Apple' in name:
+            continue
+
+        # 가격
+        price = item.find('strong', attrs={'class':'price-value'}).get_text()
+        
+        # 평점
+        # 평점이 없는 데이터도 있을 수 있어서
+        rating = item.find('em',attrs={'class':'rating'})
+        if rating :
+            rating = rating.get_text()
+        else:
+            # 평점 없는 데이터 건너뛰기
+            rating = '평점 없음'
+            continue
+        
+        # 평가개수
+        rating_cnt = item.find('span', attrs={'class':'rating-total-count'})
+        if rating_cnt:
+            rating_cnt = rating_cnt.get_text()
+        else:
+            # 평가 없는 데이터 건너뛰기
+            rating_cnt = '평가 없음'
+            continue
+
+        # 상품 링크
+        link = item.find('a', attrs={'class':'search-product-link'})['href']
+
+        # 평점이 4.5 이상이고 평가개수가 500개 이상이면서 평점이 있는 것만 출력
+        if (float(rating) >= 4.5) and (int(rating_cnt[1:-1]) >= 500):
+            print('제품이름:{}\n제품가격:{}원\n평점:{}\n평가개수:{}개'.format(name, price, rating, rating_cnt[1:-1]))
+            print('상품 링크 : {}'.format('https://www.coupang.com'+link))
+            print()
+
+```
+
