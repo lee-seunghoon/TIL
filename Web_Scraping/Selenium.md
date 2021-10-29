@@ -45,7 +45,9 @@ pip install selenium
 
 
 
-## Selenium 코드 실행
+## Selenium 기본
+
+### 1. first
 
 ```python
 # 라이브러리
@@ -86,5 +88,37 @@ search.send_keys('파이썬')
 from selenium.webdriver.common.keys import Keys
 # 검색어 입력
 search.send_keys(Keys.ENTER)
+```
+
+
+
+### 2. second
+
+```python
+# selenium 객체에서 a tag만 가져오기
+atag = browser.find_element_by_tag_name('a')
+
+# 위 코드는 여러 a tag 중에서 맨 처음 하나만 가져오는 것 같다. 전체 다 가져오고 싶을때는
+# elements만 바꿔주면 된다.
+atags = browser.find_elements_by_tag_name('a')
+
+# 그럼 전체 다 가져왔으니 하나씩 가져와서 href 속성만 출력하려면
+for tag in atags:
+    tag.get_attribute('href')
+
+  
+## Xpath로 클릭하기  
+    
+# 다음으로 넘어가서
+brower.get('http://daum.net')
+
+# name 속성을 활용해서 검색창에 입력
+search = browser.find_element_by_name('q')
+search.send_keys('파이썬')
+
+# Keys.ENTER를 활용할 수 있지만, 검색버튼을 가져와서 그걸 클릭해보자
+# Xpath로 가져와보기
+button = browser.find_element_by_xpath('//*[@id="daumSearch"]/fieldset/div/div/button[2]')
+button.click()
 ```
 
