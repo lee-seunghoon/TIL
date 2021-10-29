@@ -120,5 +120,11 @@ search.send_keys('파이썬')
 # Xpath로 가져와보기
 button = browser.find_element_by_xpath('//*[@id="daumSearch"]/fieldset/div/div/button[2]')
 button.click()
+
+# 브라우저창에서 tab 하나만 닫고 싶으면
+browser.close()
+
+# 전체 다 종료하고 싶으면
+browser.quit()
 ```
 
