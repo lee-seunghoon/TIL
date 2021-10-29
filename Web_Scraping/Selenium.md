@@ -58,5 +58,33 @@ browser = webdriver.Chrome('./chromedriver.exe')
 
 # 크롤링할 웹 주소 가져오기
 browser.get('http://naver.com')
+
+# 로그인 버튼 가져오기
+# 로그인 element 객체 생성
+element = browser.find_element_by_class_name('link_login')
+
+# element 변수 안에 로그인 버튼 엘리먼트인 selenium 객체가 정의돼 있다
+element # ==> <selenium.webdriver.remote.webelement.WebElement (session="50abbe2c7c5ab4fde6d1bf1076b728b1", element="7297fba6-f848-44e0-a34d-7836cf5485d6")>
+
+# 로그인 버튼 클릭하기
+element.click()
+
+# 브라우저에서 뒤로 가기
+browser.back()
+# 앞으로 가기
+browser.forward()
+# 새로고침
+browser.refresh()
+
+# 검색창 element 찾기
+search = browser.find_element_by_id('query')
+
+# 검색창에 검색어 적기
+search.send_keys('파이썬')
+
+# 검색어 입력을 위한 라이브러리 
+from selenium.webdriver.common.keys import Keys
+# 검색어 입력
+search.send_keys(Keys.ENTER)
 ```
 
