@@ -25,3 +25,20 @@ browser.find_elements_by_link_text('23')[0].click() # ==> 이번달
 browser.find_elements_by_link_text('25')[0].click() # ==> 이번달
 ```
 
+
+
+> - selenium으로 브라우저 탐색하면서 로딩이 긴 경우 대처하는 방법
+
+```python
+from selenium import webdriver
+# 아래 라이브러리 추가
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+
+# 로딩 중 화면일 때 조치
+# WebDriverWait를 통해서 최대 10초를 기다린다.
+# xpath를 조건으로 줄건데 이 조건을 반영해줄때까지 기다리고, 이 조건이 나오면 바로 진행한다.
+element = WebDriverWait(browser, 10).untill(EC.presence_of_element_located((By.XPATH,'//*[@id="_flight_section"]/div/div[2]/div[2]/div[1]/div[2]/div/h4/a/span[1]')))
+
+```
