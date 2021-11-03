@@ -50,6 +50,12 @@ element = WebDriverWait(browser, 10).untill(EC.presence_of_element_located((By.X
 
 # 활용2. 구글 무비에서 영화 정보 가져오기
 
+  
+
+
+
+## 활용 2-1 
+
 ```python
 import requests
 from bs4 import BeautifulSoup
@@ -120,7 +126,11 @@ Free Guy
 '''
 ```
 
+  
 
+
+
+## 활용 2-2
 
 > - 영화정보는 잘 가져 오는데, 10개만 가져온다.
 > - 지금 크롤링하려는 구글 무비 페이지는 동적 웹페이지이다.
@@ -171,7 +181,98 @@ while True:
 print('스크롤 내리기 완료')
 ```
 
+  
 
 
 
+## 활용 2-3
+
+> - 위에서 selenium으로 페이지 이동해서 영화 정보 모두 등장하게 하고
+> - 스크래핑하기
+> - 추가로 동일한 태그인데 다른 클래스인 엘리먼트 여러개 가져오고 싶으면 `리스트`를 활요하면 된다.
+
+```python
+import requests
+from bs4 import BeautifulSoup
+import time
+from selenium import webdriver
+
+# selenium으로 동적 웹 페이지 스크롤 내려서 모든 정보 등장하게 하기
+
+url = 'https://play.google.com/store/movies/top'
+
+browser = webdriver.Chrome()
+browser.get(url)
+interval = 2
+
+curr_height = browser.execute_script('return document.body.scrollHeight')
+
+while True:    
+    browser.execute_script('window.scrollTo(0, document.body.scrollHeight)')
+    new_height = browser.execute_script('return document.body.scrollHeight')
+    if curr_height == new_height:
+        break
+    else:
+        time.sleep(interval)
+        curr_height = new_height
+print('스크롤 완료')
+
+# 모든 영화 정보 등장한 후 영화 정보 가져오기
+# requests로 가져오는 게 아니라, 위에서 스크롤 내린 browser의 page_source 를 가져오기
+soup = BeautifulSoup(browser.page_source, 'lxml')
+
+# div tag 중에서 class가 'ImZGtf mpg5gc' 랑 'Vpfmgd' 이거인거 모두 가져오기
+# 리스트를 활용해서 다양한 class를 함께 가져올 수 있다.
+movies = soup.find_all('div', attrs={'class':['ImZGtf mpg5gc','Vpfmgd']})
+print(len(movies)) # ==> 210
+
+for movie in movies:
+    title = movie.find('div', attrs={'class':'WsMG1c nnK0zc'}).get_text()
+    print(title)
+```
+
+  
+
+
+
+## 활용 2-4
+
+> - 위 처럼 작성하면 처음 등장한 영화 10개에 대해서 중복으로 나타난다. 그래서 'ImZGtf mpg5gc' 빼주고 가져오면 될 것 같다.
+> - 그리고 나머지 정보들도 가져오자
+
+```python
+movies = soup.find_all('div', attrs={'class':'Vpfmgd'})
+print(len(movies)) # ==> 200
+
+for movie in movies:
+    
+    # 영화 제목
+    title = movie.find('div', attrs={'class':'WsMG1c nnK0zc'}).get_text()
+    
+    # 영화 장르
+    genre = movie.find('div', attrs={'class':'KoLSrc'})
+    if genre:
+        genre = genre.get_text()
+    else:
+        genre = '미표기'
+        
+    # 가격
+    if movie.find('span', attrs={'class':'SUZt4c djCuy'}):
+        original_price = movie.find('span', attrs={'class':'SUZt4c djCuy'}).get_text()
+        discount_price = movie.find('span', attrs={'class':'VfPpfd ZdBevf i5DZme'}).get_text()
+    else:
+        # 만약 할인된 영화만 보고싶다면 여기에서 continue 입력!
+        continue
+        original_price = movie.find('span', attrs={'class':'VfPpfd ZdBevf i5DZme'}).get_text()
+        discount_price = 'No Discount'
+    
+    # 영화 상세 정보 링크
+    link = movie.find('a', attrs={'class':'JC71ub'})['href']
+    
+    print('제목 :', title)
+    print('장르 :', genre)
+    print('기존가걱 :', original_price)
+    print('기존가걱 :', discount_price)
+    print('영화링크 :', 'https://play.google.com/'+link)
+```
 
