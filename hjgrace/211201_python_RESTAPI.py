@@ -1,4 +1,5 @@
 # flask_restful 을 사용
+
 from flask import Flask
 from flask_restful import Api, Resource, reqparse, abort
 
@@ -15,8 +16,12 @@ texts = {}
 # 데이터가 없는 정보를 요청할 경우
 def abort_not_exist(textId):
     if textId not in texts:
-        # flask_restful의 abort 사용
         abort(404, message='해당하는 ID가 없습니다.')
+        
+# 이미 데이터가 있을 경우
+def abort_if_exist(textId):
+    if textId in texts:
+        abort(409, message='해당하는 ID로 등록된 정보가 이미 존재합니다.')
 
 # class로 api 객체 생성
 class TextAnanlysis(Resource):
@@ -25,6 +30,7 @@ class TextAnanlysis(Resource):
         return texts[text_id]
     
     def post(self, text_id):
+        abort_if_exist(text_id)
         args = text_put_args.parse_args()
         texts[text_id] = args
         return texts[text_id]
@@ -34,6 +40,10 @@ class TextAnanlysis(Resource):
         texts[text_id] = args
         return texts[text_id]
         
+    def delete(self, text_id):
+        abort_not_exist(text_id)
+        del texts[text_id]
+        return '', 204
         
 api.add_resource(TextAnanlysis, '/text/<int:text_id>')
 
