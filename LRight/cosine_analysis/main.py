@@ -139,7 +139,7 @@ if __name__ == '__main__':
     # command 명령어에서 입력해준 파라미터 받기
     arg = sys.argv
     # schedule.do() 안에 함수와 함께 넣을 인자값 부여
-    schedule.every().day.at('14:54').do(run, args=arg)
+    schedule.every().day.at('14:58').do(run, arg[1])
 
     while True:
         schedule.run_pending()
