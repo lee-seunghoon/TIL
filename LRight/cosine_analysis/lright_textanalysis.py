@@ -44,7 +44,7 @@ def prepro_text(raw_data):
 
 
 # 빈도분석 후 결과 출력
-def count_analyze(texts, count_vec, color='tab:blue', title='default'):
+def count_analyze(texts, count_vec, color=None, title=None):
     
     count_vec.fit(texts)
     
@@ -59,7 +59,7 @@ def count_analyze(texts, count_vec, color='tab:blue', title='default'):
     count_word = []
     count_vector = []
 
-    for i in range(10,0,-1):
+    for i in range(20,0,-1):
         count_word.append(idx2word[(-count_matrix.toarray()[0]).argsort()[i-1]])
         count_vector.append(count_matrix.toarray()[0][(-count_matrix.toarray()[0]).argsort()[i-1]])
 
@@ -112,32 +112,19 @@ def tfidf_analyze(fit_data, analysis_data, vec, color, title):
 # 코사인 유사도 score 추출
 def cosine_extraction(vec, fit_data, count_words):
 
-    # label1인 데이터로 적합
-    vec.fit(fit_data)
+    # 적합 후 벡터 변화
+    analysis_vec = vec.fit_transform(fit_data)    
 
     # 빈도분석으로 뽑은 Top10 단어들 하나의 text로
     top10_word_vec = vec.transform([' '.join(count_words)])
 
-    # 데이터 백터 변환
-    fit_data_vec = vec.transform(fit_data)
+    cosine_sim = cosine_similarity(top10_word_vec, analysis_vec)
 
-    fit_data_cosine_sim = cosine_similarity(top10_word_vec, fit_data_vec)
+    cos_sim = fit_data.name
 
-    # label0_data_name = []
-    # label1_data_name = []
-    # for idx0 in new_data.index.values:
-    #     label0_data_name.append(df['성명'][df['index']==idx0].values[0])
-
-    # for idx1  in fit_data.index.values:
-    #     label1_data_name.append(df['성명'][df['index']==idx1].values[0])
-
-    cos_sim = 'cos' + str(fit_data.name[1:])
-
-    fit_cosine_df = pd.DataFrame({
-        'h_id' : fit_data.index.values,
-        cos_sim : fit_data_cosine_sim[0]
+    cosine_df = pd.DataFrame({
+        'id' : fit_data.index.values,
+        cos_sim : cosine_sim[0]
     })
-    #fit_cosine_df['코사인 유사도'] = fit_cosine_df['코사인 유사도'].map(lambda x: round(x,3))
-    #fit_cosine_df['rank'] = fit_cosine_df['코사인 유사도'].rank(ascending=False).astype(np.int64)
 
-    return fit_cosine_df
+    return cosine_df
