@@ -87,3 +87,41 @@ while True :
         continue
 ```
 
+
+
+### `Kakao STT` API 이용 
+
+> - 마이크에서 음성 인식하는 속도가 느린 듯
+> - 여전히 출력 결과가 느리게 나온다.
+> - 개선 방법으로 recognizer.listen(source, 10, 3) 이렇게 3초 간격을 줬음
+> - 3초마다 끊기는 하는데 텍스트 출력과 마이크 인식하는 그 사이 텀에 나오는 text를 놓치는 듯
+
+```python
+import speech_recognition as sr
+import requests
+import json
+
+recognizer = sr.Recognizer()
+
+michro = sr.Microphone(sample_rate=16000)
+
+while True:
+    try:
+        with michro as source :
+            print('test')
+            result = recognizer.listen(source, 10, 3) # ==> 3초 텀으로 제한
+            audio = result.get_raw_data()
+
+            url = 'https://kakaoi-newtone-openapi.kakao.com/v1/recognize'
+
+            header = {'Content-Type': 'application/octet-stream',
+                #'Transfer-Encoding': 'chunked',
+                'Authorization': 'KakaoAK ' + REST_API_KEY}
+            res = requests.post(url, headers=header, data=audio)
+            print(json.loads(res.text[res.text.index('{"type":"finalResult"'):res.text.rindex('}')+1])['value'])
+    
+    except Exception as e :
+        print(e)
+
+```
+
