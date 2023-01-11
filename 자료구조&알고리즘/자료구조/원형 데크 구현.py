@@ -19,11 +19,12 @@ class MyCircularDeque(object):
 
     def _add(self, node: ListNode, new: ListNode):
         """
+        PEP8 명명 규칙에 따라 메서드명 구성
         이중 연결 리스트의 삽입 메서드
         """
         # 삽입할 연결 리스트의 기존 오른쪽 값을 정의한다
         # 아마 None 값일 것으로 예상한다.
-        # front : n --> self.head.right.right --> self.tail.right
+        # front : n --> self.head.right --> self.tail
         # last  n --> self.tail.left.right  --> self.head.right
         n = node.right 
         
@@ -41,6 +42,19 @@ class MyCircularDeque(object):
         # front : n = self.head.right.right
         # last  : n = self.tail.left.right
         n.left = new
+        
+        
+    def _del(self, node: ListNode):
+        
+        # ? None 값을 미리 정의하는건가?
+        n = node.right.right
+        
+        # 업데이트
+        node.right = n
+        
+        # ? n의 왼쪽 값을 입력한 포인터의 값으로 정의? 왜?
+        n.left = node
+         
 
 
     def insertFront(self, value):
@@ -61,3 +75,83 @@ class MyCircularDeque(object):
         # 내장 함수 _add 메서드를 사용할 예정
         # value 값을 연결리스트 자료구조 형태에 담아서 추가한다.
         self._add(self.head, ListNode(value))
+        
+    
+    def insertLast(self, value):
+        """
+        :type value: int
+        :rtype: bool
+        """
+        
+        # 현재 길이 확인하여 최대 길이에 도달했다면 False return
+        if self.length == self.maxlen:
+            return False
+        
+        # 현재 길이 업데이트
+        self.length += 1
+        
+        # 뒤쪽에 값을 삽입할 때는 self.tail 포인터를 활용
+        # self.tail.left == 초기에 self.head로 지정했음
+        # 업데이트 될 것으로 예상하면서 작업
+        self._add(self.tail.left, ListNode(value))
+        
+    
+    def deleteFront(self):
+        # 삭제할 값이 없다면 False return
+        if self.length == 0:
+            return False
+        
+        # 현재 길이 업데이터
+        self.length -= 1
+        
+        # 삭제 로직
+        self._del(self.head)
+        
+        return True
+    
+    
+    def deleteLast(self):
+        # 삭제할 값이 없다면 False return
+        if self.length == 0:
+            return False
+        
+        # 현재 길이 업데이터
+        self.length -= 1
+        
+        # 삭제 로직
+        # 뒷 부분을 삭제할 때는 tail 포인터를 활용하는데
+        # 왜 left.left의 값을 넣어주는지 궁금함
+        self._del(self.tail.left.left)
+        
+        
+    def getFront(self):
+        """
+        :rtype: int
+        맨 앞의 값 반환
+        """
+        return self.head.right.val if self.length else -1
+    
+    
+    def getRear(self):
+        """
+        :rtype: int
+        """
+        return self.tail.left.val if self.length else -1
+    
+    
+    def isEmpty(self):
+        """
+        :rtype: bool
+        """
+        return self.length == 0
+
+
+    def isFull(self):
+        """
+        :rtype: bool
+        """
+        return self.length == self.maxlen
+    
+        
+if __name__ == '__main__':
+    obj = MyCircularDeque(3)
