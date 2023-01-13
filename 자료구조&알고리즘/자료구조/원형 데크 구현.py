@@ -155,3 +155,9 @@ class MyCircularDeque(object):
         
 if __name__ == '__main__':
     obj = MyCircularDeque(3)
+    obj.insertFront(1)
+    obj.insertFront(3)
+    obj.insertLast(2)
+    obj.insertLast(4)
+    print(obj.head.right.right.val)
+    print(obj.tail.left)
