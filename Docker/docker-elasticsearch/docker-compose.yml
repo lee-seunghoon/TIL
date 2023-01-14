@@ -1,0 +1,44 @@
+version: '2.2'
+
+services:
+    elasticsearch:
+        build:
+            # 현재 경로에서 Dockerfile을 위치할 경로
+            context: elasticsearch/
+        # 컨테이너 이름
+        container_name: es01
+        environment:
+            - node.name=ubuntu-es
+            - cluster.name=es-docker-cluster
+            - discovery.type=single-node
+            - bootstrap.memory_lock=true
+            - "ES_JAVA_OPTS=-Xms4g -Xmx4g"  # <== JAVA heap memory setting
+        ulimits:
+            memlock:
+                soft: -1
+                hard: -1
+        volumes:    # ==> Data Mount
+            - data01:/usr/share/elasticsearch/data
+        ports:
+            - 9200:9200
+        networks:
+            - elastic
+
+    kibana:
+        image: docker.elastic.co/kibana/kibana:7.17.7
+        container_name: kibana
+        ports:
+            - 5601:5601
+        environment:
+            - ELASTICSEARCH_HOSTS=["http://es01:9200"]
+        depends_on:
+            - elasticsearch
+        networks:
+            - elastic
+
+volumes:
+    data01:
+        driver: local
+
+networks:
+    elastic:
