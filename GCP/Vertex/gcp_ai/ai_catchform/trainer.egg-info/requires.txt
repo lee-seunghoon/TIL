@@ -1,0 +1,8 @@
+transformers
+datasets
+tqdm
+cloudml-hypertune
+easydict
+konlpy
+sklearn
+seqeval
