@@ -1,0 +1,13 @@
+setuptools==61.2.0
+torch==1.13.0
+transformers==4.24.0
+sentence-transformers==2.2.2
+numpy
+pandas
+fastapi
+uvicorn
+fs-gcsfs
+google-cloud-storage
+gunicorn
+requests
+thefuzz
