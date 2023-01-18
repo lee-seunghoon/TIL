@@ -23,6 +23,8 @@ class Solution(object):
 
         # 각 연결 리스트의 루트를 힙에 저장한다
         for i, lst in enumerate(lists):
+            print(lst.val)
+            print(type(lst))
             # 이 말은 lists 노드의 i번째 값이 있으면(None이 아니면)
             if lists[i]:
                 # heappush의 인자값이 중복이 있다면, 에러를 발생하기 때문에
@@ -56,8 +58,8 @@ class Solution(object):
                 # heap 자료구조에 다시 추가한다.
                 heappush(heap, (result.next.val, idx, result.next))
 
-        print(result.val)
-        return result
+        print(root.next.val)
+        return root.next
 
 
 if __name__ == "__main__":
