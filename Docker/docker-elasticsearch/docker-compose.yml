@@ -17,8 +17,18 @@ services:
             memlock:
                 soft: -1
                 hard: -1
+        # volume을 아래와 같이 구성 가능        
         volumes:    # ==> Data Mount
-            - data01:/usr/share/elasticsearch/data
+            # 현재 소스파일을 docker system으로 연동시키는 방법 --> 이 command를 활용하면 Dockerfile에서 굳이 COPY할 필요 없다.
+            - type: bind
+              source: elasticsearch/analysis/test.txt
+              target: /usr/share/elasticsearch/config/analysis/synonym.txt
+              read_only: true
+            # 아래 표현의 축약형 == - data01:/usr/share/elasticsearch/data
+            - type: volume
+              source: data01
+              target: /usr/share/elasticsearch/data
+            
         ports:
             - 9200:9200
         networks:
