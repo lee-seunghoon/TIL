@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 import models, schemas
 
 
-def get_ner(db: Session, today = date.today().strftime("%Y-%m")):
+def get_ner(db: Session, today=date.today().strftime("%Y-%m")):
     """
     NER 데이터 조회
     현재 년월(ex. 2023-02)을 필터링 기준으로 활용하여 전체 데이터 조회 
